@@ -2,7 +2,7 @@ package ss1_introduction_java.bai_tap.bai_2;
 
 import java.util.Scanner;
 
-public class Convert_numbers_to_letters {
+public class ConvertNumbersToLetters {
     static void checkNum1(int number) {
         switch (number) {
             case 0:

@@ -11,7 +11,7 @@ public class Count {
         String character=scanner.nextLine();
         int count=0;
         for (int i=0;i<string.length();i++){
-            if (string[i]==character){
+            if (string==character){
                 count++;
             }
 

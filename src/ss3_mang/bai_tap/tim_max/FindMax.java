@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.tim_max;
 
 import java.util.Scanner;
 
-public class Findmax {
+public class FindMax {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Input length array: ");
