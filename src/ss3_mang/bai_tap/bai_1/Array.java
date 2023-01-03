@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.bai_1;
 
 import java.util.Scanner;
 
-public class Delete {
+public class Array {
     public static void main(String[] args) {
         int length;
         Scanner scanner = new Scanner(System.in);

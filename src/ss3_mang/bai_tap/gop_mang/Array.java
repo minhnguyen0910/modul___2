@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.gop_mang;
 
 import java.util.Scanner;
 
-public class MergAarray {
+public class Array {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input array length 1:  ");

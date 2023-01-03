@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.tim_min;
 
 import java.util.Scanner;
 
-public class FindMin {
+public class Min {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input cow = ");

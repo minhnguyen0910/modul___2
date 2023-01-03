@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.dem_so_sinh_vien;
 
 import java.util.Scanner;
 
-public class CountStudents {
+public class Students {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Student Numbers: ");

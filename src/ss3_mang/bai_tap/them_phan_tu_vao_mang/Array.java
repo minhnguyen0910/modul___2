@@ -2,7 +2,7 @@ package ss3_mang.bai_tap.them_phan_tu_vao_mang;
 
 import java.util.Scanner;
 
-public class Add {
+public class Array {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input length ");
