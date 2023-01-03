@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class QuadraticEquation {
     double a, b, c;
-    public QuadraticEquation(){
+
+    public QuadraticEquation() {
 
     }
 
@@ -37,11 +38,11 @@ public class QuadraticEquation {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Input a = ");
-        double a = scanner.nextDouble();
+        double a = Double.parseDouble(scanner.nextLine());
         System.out.print("Input b = ");
-        double b = scanner.nextDouble();
+        double b = Double.parseDouble(scanner.nextLine());
         System.out.print("Input c = ");
-        double c = scanner.nextDouble();
+        double c = Double.parseDouble(scanner.nextLine());
         QuadraticEquation quadraticEquation = new QuadraticEquation(a, b, c);
         if (quadraticEquation.getDiscriminant() < 0) {
             System.out.print("Inexperienced method");

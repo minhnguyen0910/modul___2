@@ -10,14 +10,14 @@ public class Count {
         System.out.print("Input string");
         String string = scanner.nextLine();
         System.out.print("Enter the character to be checked ");
-        String character=scanner.nextLine();
+        String character = scanner.nextLine();
         String[] arr = new String[string.length()];
         arr = string.split("");
         System.out.println(Arrays.toString(arr));
-        int count=0;
-        for (int i=0; i<arr.length;i++){
+        int count = 0;
+        for (int i = 0; i < arr.length; i++) {
             System.out.println();
-            if (arr[i].equals(character)){
+            if (arr[i].equals(character)) {
                 count++;
             }
         }
