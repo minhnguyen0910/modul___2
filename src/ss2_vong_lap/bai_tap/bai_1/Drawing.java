@@ -12,36 +12,42 @@ public class Drawing {
         int num;
 
         do {
-            System.out.println("1.Print the rectangle");
-            System.out.println("2.Print the square triangle");
-            System.out.println("3.Print isosceles triangle");
-            System.out.println("4.Exit");
-            System.out.println("Enter your chose");
+            System.out.println("1.Print the rectangle \n" +
+                    "2.Print the square triangle \n" +
+                    "3.Print isosceles triangle \n" +
+                    "4.Exit \n" +
+                    "Enter your chose");
             num = Integer.parseInt(scanner.nextLine());
             switch (num) {
                 case 1:
-                    for (i = 0; i < 5; i++) {
-                        for (j = 0; j < 10; j++) {
+                    System.out.print("Input height: ");
+                    int height = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Input width: ");
+                    int width = Integer.parseInt(scanner.nextLine());
+                    for (i = 0; i < height; i++) {
+                        for (j = 0; j < width; j++) {
                             System.out.print("*");
                         }
                         System.out.print("\n");
                     }
                     break;
                 case 2:
-                    for (i = 0; i < 5; i++) {
+                    System.out.print("Input height: ");
+                    int height1 = Integer.parseInt(scanner.nextLine());
+                    for (i = 0; i < height1; i++) {
                         for (j = 0; j <= i; j++) {
                             System.out.print("*");
                         }
                         System.out.print("\n");
                     }
-                    for (i = 0; i < 5; i++) {
-                        for (j = 5; j > i; j--) {
+                    for (i = 0; i < height1; i++) {
+                        for (j = height1; j > i; j--) {
                             System.out.print("*");
                         }
                         System.out.print("\n");
                     }
-                    for (i = 0; i < 5; i++) {
-                        for (j = 4; j > i; j--) {
+                    for (i = 0; i < height1; i++) {
+                        for (j = height1 - 1; j > i; j--) {
                             System.out.print(" ");
                         }
                         for (z = 0; z <= i; z++) {
@@ -49,19 +55,21 @@ public class Drawing {
                         }
                         System.out.print("\n");
                     }
-                    for (i = 0; i < 5; i++) {
+                    for (i = 0; i < height1; i++) {
                         for (j = 0; j < i; j++) {
                             System.out.print(" ");
                         }
-                        for (z = 5; z > i; z--) {
+                        for (z = height1; z > i; z--) {
                             System.out.print("*");
                         }
                         System.out.print("\n");
                     }
                     break;
                 case 3:
-                    for (i = 0; i < 5; i++) {
-                        for (j = 4; j > i; j--) {
+                    System.out.print("Input height: ");
+                    int height2 = Integer.parseInt(scanner.nextLine());
+                    for (i = 0; i < height2; i++) {
+                        for (j = height2 - 1; j > i; j--) {
                             System.out.print(" ");
                         }
                         for (z = 0; z <= i * 2; z++) {

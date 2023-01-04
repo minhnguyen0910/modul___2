@@ -2,7 +2,7 @@ package ss2_vong_lap.bai_tap.bai_2;
 
 public class PrimeNumberDisplay {
 
-    public static boolean check(int number) {
+    public static boolean isPrime(int number) {
         boolean flag = true;
         if (number == 2 || number == 3) {
             return true;
@@ -21,7 +21,7 @@ public class PrimeNumberDisplay {
         int count = 0;
         int i = 2;
         while (count <= 20) {
-            if (check(i)) {
+            if (isPrime(i)) {
                 count++;
                 System.out.print(i + " ");
             }

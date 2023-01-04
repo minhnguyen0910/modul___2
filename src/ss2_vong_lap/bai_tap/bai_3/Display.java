@@ -1,7 +1,7 @@
 package ss2_vong_lap.bai_tap.bai_3;
 
 public class Display {
-    public static boolean check(int num){
+    public static boolean isPrime(int num){
         boolean flag=true;
         for (int i=2;i<=Math.sqrt(num);i++){
             if (num%i==0){
@@ -13,7 +13,7 @@ public class Display {
 
     public static void main(String[] args) {
         for (int i=2;i<100;i++){
-            if (check(i)){
+            if (isPrime(i)){
                 System.out.print(i+" ");
             }
         }
