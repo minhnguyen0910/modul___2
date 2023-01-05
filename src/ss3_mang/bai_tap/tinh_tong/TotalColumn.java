@@ -20,11 +20,7 @@ public class TotalColumn {
         int colum = Integer.parseInt(scanner.nextLine());
         int sum = 0;
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < cow; j++) {
-                if (j == colum) {
-                    sum += array[i][j];
-                }
-            }
+            sum += array[i][colum];
         }
         System.out.print("Total = " + sum);
     }

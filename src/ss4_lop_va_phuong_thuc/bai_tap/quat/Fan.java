@@ -16,6 +16,9 @@ public class Fan {
         this.color = color;
 
     }
+//    public String display(){
+//        return
+//    }
 
     public byte speedUp() {
         this.speed++;
@@ -23,7 +26,8 @@ public class Fan {
     }
 
     public byte speedLow() {
-        return this.speed--;
+        this.speed--;
+        return this.speed;
     }
 
 
