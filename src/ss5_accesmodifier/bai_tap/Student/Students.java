@@ -1,10 +1,12 @@
 package ss5_accesmodifier.bai_tap.Student;
 
 public class Students {
-    private String name = "John";
-    private String classes = "C02";
+    private String name;
+    private String classes;
 
     public Students() {
+        this.name="John";
+        this.classes="C02";
 
     }
 
