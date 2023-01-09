@@ -1,6 +1,8 @@
 package ss7_abtract_class_interface.trien_khai_interFace;
 
-public abstract class Shape{
+import ss7_abtract_class_interface.trien_khai_colorable.Colorable;
+
+public abstract class Shape implements Resizeable {
     String color;
 
     public Shape(String color) {
