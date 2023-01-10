@@ -58,12 +58,6 @@ public class MoveablePoint extends Point {
         return Arrays.toString(move());
     }
 
-    public static void main(String[] args) {
-        MoveablePoint moveablePoint = new MoveablePoint(5, 6, 8, 9);
-        moveablePoint.move();
-        System.out.println(moveablePoint);
 
-
-    }
 
 }

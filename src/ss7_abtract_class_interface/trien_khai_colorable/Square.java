@@ -1,7 +1,7 @@
 package ss7_abtract_class_interface.trien_khai_colorable;
 
 
-public class Square extends Shape {
+public class Square extends Shape implements Colorable {
     private double a;
 
     public Square(String color, double a) {

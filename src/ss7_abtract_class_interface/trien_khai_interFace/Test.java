@@ -9,8 +9,16 @@ public class Test {
 
         System.out.println("Pre-sorted:");
         for (Shape shape : shapes) {
-            System.out.println("Before " + shape.getArea());
-            System.out.println("After " + shape.resize());
+            if (shape instanceof Circle) {
+                System.out.println("Before " + ((Circle) shape).getArea());
+                System.out.println("After " + ((Circle) shape).resize());
+            } else if (shape instanceof Rectangle) {
+                System.out.println("Before " + ((Rectangle) shape).getArea());
+                System.out.println("After " + ((Rectangle) shape).resize());
+            } else {
+                System.out.println("Before " + ((Square) shape).getArea());
+                System.out.println("After " + ((Square) shape).resize());
+            }
         }
     }
 }

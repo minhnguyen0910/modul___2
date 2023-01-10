@@ -1,6 +1,6 @@
 package ss7_abtract_class_interface.trien_khai_colorable;
 
-public class Circle extends Shape {
+public class Circle extends Shape implements Colorable {
     private double radius;
 
     public Circle(String color, double radius) {

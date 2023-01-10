@@ -1,6 +1,6 @@
 package ss7_abtract_class_interface.trien_khai_interFace;
 
-public class Square extends Shape{
+public class Square extends Shape implements Resizeable {
     private double a;
 
     public Square(String color, double a) {

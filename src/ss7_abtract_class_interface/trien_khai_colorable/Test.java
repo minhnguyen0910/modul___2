@@ -6,7 +6,12 @@ public class Test {
         shapes[0] = new Circle("red", 10);
         shapes[1] = new Square("green", 20);
         for (Shape shape : shapes) {
-            System.out.println(shape.howToColor());
+            if (shape instanceof Circle) {
+                System.out.println(((Circle) shape).howToColor());
+            } else {
+                System.out.println(((Square) shape).howToColor());
+            }
         }
     }
 }
+

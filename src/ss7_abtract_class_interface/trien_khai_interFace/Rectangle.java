@@ -1,6 +1,6 @@
 package ss7_abtract_class_interface.trien_khai_interFace;
 
-public class Rectangle extends Shape {
+public class Rectangle extends Shape implements Resizeable {
     private double x;
     private double y;
 
