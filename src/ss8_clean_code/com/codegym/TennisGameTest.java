@@ -72,10 +72,12 @@ public class TennisGameTest {
         int scoreOfFistPlayer = 0;
         int scoreOfSecondPlayer = 0;
         for (int i = 0; i < highestScore; i++) {
-            if (i < this.player1Score)
+            if (i < this.player1Score) {
                 scoreOfFistPlayer += 1;
-            if (i < this.player2Score)
+            }
+            if (i < this.player2Score) {
                 scoreOfSecondPlayer += 1;
+            }
         }
         assertEquals(this.expectedScore, TennisGame.getScore("John", "Bill", scoreOfFistPlayer, scoreOfSecondPlayer));
     }

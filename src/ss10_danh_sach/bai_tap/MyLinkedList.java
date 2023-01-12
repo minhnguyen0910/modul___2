@@ -1,8 +1,9 @@
 package ss10_danh_sach.bai_tap;
 
-public class MyLinkedList {
-    private  Node head;
-    private  int numNodes;
+public class MyLinkedList<E> {
+    private Node head;
+    private Node tail;
+    private int numNodes;
 
     public MyLinkedList(Object data) {
         head = new Node(data);
@@ -20,48 +21,85 @@ public class MyLinkedList {
             return this.data;
         }
     }
-    public void add(int index,Object data){
-        Node temp= head;
+
+    public void add(int index, Object data) {
+        Node temp = head;
         Node holder;
-        for (int i=0;i<index-1&&temp.next!=null;i++){
-           temp= temp.next;
+        for (int i = 0; i < index - 1 && temp.next != null; i++) {
+            temp = temp.next;
         }
-        holder= temp.next;
-        temp.next=new Node(data);
-        temp.next.next=holder;
+        holder = temp.next;
+        temp.next = new Node(data);
+        temp.next.next = holder;
         numNodes++;
     }
-    public void addFirst(Object data){
-        Node temp= head;
-        head= new Node(data);
-        head.next=temp;
+
+    public void addFirst(Object data) {
+        Node temp = head;
+        head = new Node(data);
+        head.next = temp;
         numNodes++;
 
     }
-    public Node get(int index){
-        Node temp= head;
-        for (int i=0; i<index;i++){
-            temp=temp.next;
+
+    public Node get(int index) {
+        Node temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
         }
         return temp;
     }
+
     public void printList() {
         Node temp = head;
-        while(temp != null) {
-            System.out.print(temp.data+" ");
+        while (temp != null) {
+            System.out.print(temp.data + " ");
             temp = temp.next;
+        }
+    }
+
+    public void remoteFirst() {
+        Node temp = head;
+        head = temp.next;
+    }
+
+    public void remoteLast() {
+        Node current = head;
+        for (int i = 0; i < numNodes - 2; i++) {
+            current = current.next;
+        }
+        tail = current;
+        current.next = null;
+    }
+
+    public void remote(int index) {
+        Node temp = head;
+        Node holder;
+        if (index == 0) {
+            remoteFirst();
+        } else if (index == numNodes - 1) {
+            remoteLast();
+        } else {
+            for (int i = 0; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            holder = temp.next;
+            temp.next = holder.next;
+            numNodes--;
         }
     }
 
     public static void main(String[] args) {
         System.out.println("/=/=/=/= TESTING /=/=/=/=");
         MyLinkedList ll = new MyLinkedList(1);
-//        ll.addFirst(11);
-//        ll.addFirst(12);
-//        ll.addFirst(13);
-
-        ll.add(4,9);
-        ll.add(4,9);
+        ll.addFirst(11);
+        ll.addFirst(12);
+        ll.addFirst(13);
+        ll.add(4, 9);
+        ll.add(4, 9);
+        ll.remote(3);
+        ll.remoteFirst();
+        ll.remoteLast();
         ll.printList();
     }
 }
