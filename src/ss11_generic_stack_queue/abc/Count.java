@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class Count {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("enter string :");
+        System.out.println("nhap chuoi");
         String string = scanner.nextLine();
         String[] arr = string.toLowerCase().split("");
         Map<String, Integer> map = new TreeMap<>();
