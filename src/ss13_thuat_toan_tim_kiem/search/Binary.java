@@ -23,23 +23,20 @@ public class Binary {
         }
         System.out.println("moi ban nhap gi tri can tim");
         int value = Integer.parseInt(scanner.nextLine());
-        System.out.println(Binary.binarySearch(array, value));
+        System.out.println(binarySearch(array, value, 0, num));
     }
 
-    public static int binarySearch(int[] array, int value) {
-        int left = 0;
-        int right = array.length - 1;
-
-        while (left <= right) {
-            int middle = (left + right) / 2;
-            if (value == array[middle]) {
-                return middle;
-            } else if (value < array[middle]) {
-                right = middle - 1;
-            } else {
-                left = middle + 1;
-            }
+    public static int binarySearch(int[] array, int value, int left, int right) {
+        if (left > right) {
+            return -1;
         }
-        return -1;
+        int middle = (right - left) / 2;
+        if (array[middle] == value) {
+            return middle;
+        }
+        if (array[middle] > value) {
+            return binarySearch(array, value, left, middle - 1);
+        }
+        return binarySearch(array, value, middle + 1, right);
     }
 }

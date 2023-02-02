@@ -3,7 +3,7 @@ package ss13_thuat_toan_tim_kiem.tim_chuoi_lien_tiep;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Chuoi {
+public class ConsecutiveSeries {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("nhap vao chuoi cua ban");
@@ -17,8 +17,12 @@ public class Chuoi {
                 if (string.charAt(j) > characters.getLast()) {
                     if (!characters.contains(string.charAt(j))) {
                         characters.add(string.charAt(j));
-                    } else break;
-                } else break;
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
             }
             if (characters.size() > max.size()) {
                 max.clear();
