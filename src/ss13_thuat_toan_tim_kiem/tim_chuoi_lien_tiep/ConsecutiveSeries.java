@@ -14,12 +14,8 @@ public class ConsecutiveSeries {
         for (int i = 0; i < string.length(); i++) {
             characters.add(string.charAt(i));
             for (int j = i + 1; j < string.length(); j++) {
-                if (string.charAt(j) > characters.getLast()) {
-                    if (!characters.contains(string.charAt(j))) {
-                        characters.add(string.charAt(j));
-                    } else {
-                        break;
-                    }
+                if (string.charAt(j) > characters.getLast() && !characters.contains(string.charAt(j))) {
+                    characters.add(string.charAt(j));
                 } else {
                     break;
                 }

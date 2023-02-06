@@ -1,2 +1,4 @@
-package casetudy.servives;public interface FacilityService {
+package casetudy.servives;
+
+public interface FacilityService extends Service{
 }

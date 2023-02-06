@@ -1,2 +1,4 @@
-package casetudy.servives;public interface BookingService {
+package casetudy.servives;
+
+public interface BookingService extends Service{
 }

@@ -1,4 +1,4 @@
 package casetudy.servives;
 
-public interface Employee extends Service{
+public interface EmployeeService extends Service{
 }

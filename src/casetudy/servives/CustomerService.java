@@ -1,2 +1,4 @@
-package casetudy.servives;public interface CustomerService {
+package casetudy.servives;
+
+public interface CustomerService extends Service{
 }
