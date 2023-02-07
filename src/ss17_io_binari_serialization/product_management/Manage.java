@@ -48,15 +48,15 @@ public class Manage {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        String name;
+        String choose;
         do {
             System.out.println("moi ban nhap lua chon\n" +
                     "1.Them san pham\n" +
                     "2.Hien thi san pham\n" +
                     "3.Tim kiem san pham theo ten\n" +
                     "4.Exit");
-            name = scanner.nextLine();
-            switch (name) {
+            choose = scanner.nextLine();
+            switch (choose) {
                 case "1":
                     addWrite();
                     break;
@@ -72,7 +72,5 @@ public class Manage {
                     System.out.println("lua chon tu 1=> 4");
             }
         } while (true);
-
-
     }
 }
