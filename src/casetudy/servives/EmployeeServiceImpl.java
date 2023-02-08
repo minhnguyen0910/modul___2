@@ -1,7 +1,12 @@
 package casetudy.servives;
 
+import casetudy.models.Customer;
 import casetudy.models.Employee;
+import casetudy.utils.DataEmployee;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +14,7 @@ import java.util.Scanner;
 public class EmployeeServiceImpl implements EmployeeService {
     static List<Employee> employeeList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
+    DataEmployee dataEmployee=new DataEmployee();
 
     public void display() {
         if (employeeList.isEmpty()) {
@@ -107,22 +113,40 @@ public class EmployeeServiceImpl implements EmployeeService {
         Double wage = Double.parseDouble(scanner.nextLine());
         Employee employee = new Employee(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, employeeCode, level, workingPosition, wage);
         employeeList.add(employee);
+        FileWriter fileWriter;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv", true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(employee.toString());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void edit() {
+        List<Employee> employeeList1;
+        try {
+           employeeList1=dataEmployee.readEmployee();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         do {
             System.out.println("nhap thong tin can sua\n" + "1.ten\n" + "2.ngay sinh\n" + "3.gioi tinh\n" + "4.so chung minh nhan dan\n" + "5.so dien thoai\n" + "6.email\n" + "7.ma nhan vien\n" + "8.cap do\n" + "9.vi tri lam viec\n" + "10.luong\n" +
-                    "11.exit");
-            int choose;
-            do {
-                choose = Integer.parseInt(scanner.nextLine());
-                if (choose < 1 || choose > 10) {
-                    System.out.println("nhap lai lua chon cua ban");
-                }
-            } while (choose < 1 || choose > 10);
+                    "11.luu thay doi\n" +
+                    "12.exit");
+            String choose=scanner.nextLine();
 
             switch (choose) {
-                case 1: {
+                case "1": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String nameBefore = scanner.nextLine();
@@ -140,7 +164,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                 }
                 break;
-                case 2: {
+                case "2": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -158,7 +182,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 3: {
+                case "3": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -176,7 +200,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 4: {
+                case "4": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -194,7 +218,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 5: {
+                case "5": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -212,7 +236,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 6: {
+                case "6": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -230,7 +254,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 7: {
+                case "7": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -248,7 +272,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 8: {
+                case "8": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -266,7 +290,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 9: {
+                case "9": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -284,7 +308,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case 10: {
+                case "10": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
                     String name = scanner.nextLine();
@@ -297,30 +321,38 @@ public class EmployeeServiceImpl implements EmployeeService {
                         }
                     }
                     if (flag) {
-                        System.out.println("tên không tồn tại");
+                        System.out.println("ten khong ton tai");
 
                     }
                     break;
                 }
-                case 11:
+                case "11":
+                    dataEmployee.writeEmployee(employeeList1);
+                case "12":
                     System.exit(1);
                     break;
                 default:
-                    System.out.println("nhap tu co trong menu");
+                    System.out.println("vui long nhap lua hon tu 1 => 12");
 
             }
         } while (true);
     }
 
     public void delete() {
+        List<Employee> employeeList1;
+        try {
+            employeeList1=dataEmployee.readEmployee();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("nhap ten can xoa");
         String name = scanner.nextLine();
-        if (employeeList.isEmpty()) {
+        if (employeeList1.isEmpty()) {
             System.out.println("khong co nhan vien");
         } else {
-            for (int i = 0; i < employeeList.size(); i++) {
-                if (name.equals(employeeList.get(i).getName())) {
-                    employeeList.remove(i);
+            for (int i = 0; i < employeeList1.size(); i++) {
+                if (name.equals(employeeList1.get(i).getName())) {
+                    employeeList1.remove(i);
                 }
             }
         }

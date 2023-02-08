@@ -1,6 +1,5 @@
-package ss16_doc_ghi_file.doc_file;
+package ss16_doc_ghi_file.read_file;
 
-import javax.imageio.IIOException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Test {
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Country country1 = new Country(1, "a", "A");
         Country country2 = new Country(2, "b", "B");
         Country country3 = new Country(3, "c", "C");
@@ -58,10 +57,11 @@ public class Test {
         try {
             write(countryList);
             System.out.println("successful");
+            countryList.add(new Country(5, "e", "E"));
+            write(countryList);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        countryList.add(new Country(5, "e", "E"));
-        write(countryList);
+
     }
 }

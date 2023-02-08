@@ -1,4 +1,4 @@
-package ss16_doc_ghi_file.doc_file;
+package ss16_doc_ghi_file.read_file;
 
 public class Country {
     int id;

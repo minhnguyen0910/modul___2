@@ -1,8 +1,8 @@
 package casetudy.models;
 
-public class Customer extends People{
-int customerCode;
-String customerType;
+public class Customer extends People {
+    int customerCode;
+    String customerType;
 
     public Customer(String name, int dayOfBirth, String sex, int identityCardNumber, int phoneNumber, String email, int customerCode, String customerType) {
         super(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email);
@@ -28,15 +28,6 @@ String customerType;
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerCode=" + customerCode +
-                ", customerType='" + customerType + '\'' +
-                ", name='" + name + '\'' +
-                ", dayOfBirth=" + dayOfBirth +
-                ", sex='" + sex + '\'' +
-                ", identityCardNumber=" + identityCardNumber +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                '}';
+        return customerCode + "," + customerType + "," + name + "," + dayOfBirth + "," + sex + "," + identityCardNumber + "," + phoneNumber + "," + email;
     }
 }

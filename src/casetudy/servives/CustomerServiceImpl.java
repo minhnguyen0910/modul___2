@@ -2,7 +2,10 @@ package casetudy.servives;
 
 import casetudy.models.Customer;
 import casetudy.models.People;
+import casetudy.utils.DataCustomer;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +13,7 @@ import java.util.Scanner;
 public class CustomerServiceImpl implements CustomerService {
     Scanner scanner = new Scanner(System.in);
     static List<Customer> customerList = new LinkedList<>();
+    DataCustomer dataCustomer=new DataCustomer();
 
     public void add() {
         System.out.println("ten khach hang");
@@ -29,61 +33,67 @@ public class CustomerServiceImpl implements CustomerService {
         boolean flagOfCustomer;
         do {
             customerCode = Integer.parseInt(scanner.nextLine());
-            flagOfCustomer=true;
+            flagOfCustomer = true;
             for (Customer i : customerList) {
                 if (customerCode == i.getCustomerCode()) {
                     System.out.println("ma da ton tai\n" +
                             "vui long nhap ma khac");
-                    flagOfCustomer=false;
+                    flagOfCustomer = false;
                 }
             }
-        }while (!flagOfCustomer);
-
-        System.out.println("chon kieu khach hang\n" +
-                "1.Diamond\n" +
-                "2.Platinium\n" +
-                "3.Gold\n" +
-                "4.Silver\n" +
-                "5.Member");
+        } while (!flagOfCustomer);
         String customerType = null;
-        int choose = 0;
-        boolean flagOfCustomerType;
+        String chooseOfCustomerType = null;
         do {
-            try {
-                do {
-                    choose = Integer.parseInt(scanner.nextLine());
-                    if (choose > 5 || choose < 1) {
-                        System.out.println("nhap lua chon tu 1=>5");
-                    }
-                    flagOfCustomerType = true;
-                } while (choose > 5 || choose < 1);
+            System.out.println("chon kieu khach hang\n" +
+                    "1.Diamond\n" +
+                    "2.Platinium\n" +
+                    "3.Gold\n" +
+                    "4.Silver\n" +
+                    "5.Member");
+            String choose = scanner.nextLine();
+            switch (choose) {
+                case "1":
+                    customerType = "Diamond";
+                    break;
+                case "2":
+                    customerType = "Platinium";
+                    break;
+                case "3":
+                    customerType = "Gold";
+                    break;
+                case "4":
+                    customerType = "Silver";
+                    break;
+                case "5":
+                    customerType = "Member";
+                    break;
+                default:
+                    System.out.println("vui long nhap lua chon tu 1 => 5");
 
-            } catch (NumberFormatException e) {
-                System.out.println("nhap chu");
-                flagOfCustomerType = false;
             }
-        } while (!flagOfCustomerType);
-
-
-        switch (choose) {
-            case 1:
-                customerType = "Diamond";
-                break;
-            case 2:
-                customerType = "Platinium";
-                break;
-            case 3:
-                customerType = "Gold";
-            case 4:
-                customerType = "Silver";
-                break;
-            case 5:
-                customerType = "Member";
-
-        }
+        } while (!chooseOfCustomerType.equals("12345"));
         Customer newCustomer = new Customer(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, customerCode, customerType);
         customerList.add(newCustomer);
+        FileWriter fileWriter;
+        BufferedWriter bufferedWriter = null;
+        try {
+            fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_customer.csv", true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(newCustomer.toString());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
+
 
     public void display() {
         if (customerList.isEmpty()) {
@@ -95,11 +105,13 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
-    public void edit() {
+    public void edit() throws IOException {
+        List<Customer> customerList1= dataCustomer.Read();
+
         System.out.println("nhap ma khách hang");
         int customerCode = Integer.parseInt(scanner.nextLine());
         boolean flagOfPeople = false;
-        for (Customer i : customerList) {
+        for (Customer i : customerList1) {
             if (customerCode == i.getCustomerCode()) {
                 flagOfPeople = true;
             }
@@ -113,87 +125,75 @@ public class CustomerServiceImpl implements CustomerService {
                     "5.so dien thoi\n" +
                     "6.email\n" +
                     "7.ma khach hang\n" +
-                    "8.kieu khach hang");
-            int choose = 0;
-            boolean flag;
-            do {
-                try {
-                    choose = Integer.parseInt(scanner.nextLine());
-                    flag = true;
-                    if (choose < 1 || choose > 8) {
-                        System.out.println("vui long nhap lua chon tu 1 => 8");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("vui long nhap lua chon bang so tu 1 => 8");
-                    flag = false;
-                }
-            } while (!flag);
+                    "8.kieu khach hang\n" +
+                    "9.luu thay doi");
+            String choose = scanner.nextLine();
             switch (choose) {
-                case 1:
+                case "1":
                     System.out.println("nhap ten moi");
                     String name = scanner.nextLine();
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setName(name);
                         }
                     }
                     break;
-                case 2:
+                case "2":
                     System.out.println("nhap ngay sinh moi");
                     int dayOfBirth = Integer.parseInt(scanner.nextLine());
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setDayOfBirth(dayOfBirth);
                         }
                     }
                     break;
-                case 3:
+                case "3":
                     System.out.println("nhap gioi tinh");
                     String sex = scanner.nextLine();
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setSex(sex);
                         }
                     }
                     break;
-                case 4:
+                case "4":
                     System.out.println("nhap so cmnd moi");
                     int identityCardNumber = Integer.parseInt(scanner.nextLine());
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setIdentityCardNumber(identityCardNumber);
                         }
                     }
                     break;
-                case 5:
+                case "5":
                     System.out.println("nhap so dien thoai moi");
                     int phoneNumber = Integer.parseInt(scanner.nextLine());
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setPhoneNumber(phoneNumber);
                         }
                     }
                     break;
-                case 6:
+                case "6":
                     System.out.println("nhap email moi");
                     String email = scanner.nextLine();
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             i.setEmail(email);
                         }
                     }
                     break;
-                case 7:
+                case "7":
                     System.out.println("nhap ma moi");
                     int newCustomerCode = Integer.parseInt(scanner.nextLine());
                     boolean flags = false;
-                    for (Customer i : customerList) {
+                    for (Customer i : customerList1) {
                         if (customerCode == i.getCustomerCode()) {
                             flags = true;
                         }
                     }
                     if (flags) {
-                        for (Customer i : customerList) {
+                        for (Customer i : customerList1) {
                             if (customerCode == i.getCustomerCode()) {
                                 i.setCustomerCode(newCustomerCode);
                             }
@@ -202,63 +202,64 @@ public class CustomerServiceImpl implements CustomerService {
                         System.out.println("ma khach hang da on tai");
                     }
                     break;
-                case 8:
-                    System.out.println("chon kieu khach hang moi\n" +
-                            "1.Diamond\n" +
-                            "2.Platinium\n" +
-                            "3.Gold\n" +
-                            "4.Silver\n" +
-                            "5.Member");
-                    String customerType;
-                    int chooseNew = 0;
-                    boolean flagOfCustomerType;
+                case "8":
+                    String chooseOfCustomerType = null;
+                    String customerType = null;
                     do {
-                        try {
-                            do {
-                                chooseNew = Integer.parseInt(scanner.nextLine());
-                                if (chooseNew > 5 || chooseNew < 1) {
-                                    System.out.println("nhap lua chon tu 1=>5");
-                                }
-                                flagOfCustomerType = true;
-                            } while (chooseNew > 5 || chooseNew < 1);
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("nhap chu");
-                            flagOfCustomerType = false;
+                        System.out.println("chon kieu khach hang moi\n" +
+                                "1.Diamond\n" +
+                                "2.Platinium\n" +
+                                "3.Gold\n" +
+                                "4.Silver\n" +
+                                "5.Member");
+                        chooseOfCustomerType = scanner.nextLine();
+                        switch (chooseOfCustomerType) {
+                            case "1":
+                                customerType = "Diamond";
+                                break;
+                            case "2":
+                                customerType = "Platinium";
+                                break;
+                            case "3":
+                                customerType = "Gold";
+                            case "4":
+                                customerType = "Silver";
+                                break;
+                            case "5":
+                                customerType = "Member";
+                                break;
+                            default:
+                                System.out.println("vui long nhap lua chon tu 1 => 5");
                         }
-                    } while (!flagOfCustomerType);
 
 
-                    switch (chooseNew) {
-                        case 1:
-                            customerType = "Diamond";
-                            break;
-                        case 2:
-                            customerType = "Platinium";
-                            break;
-                        case 3:
-                            customerType = "Gold";
-                        case 4:
-                            customerType = "Silver";
-                            break;
-                        case 5:
-                            customerType = "Member";
-
-                    }
+                    } while (!chooseOfCustomerType.equals("12345"));
+                    break;
+                case "9":
+                    dataCustomer.write(customerList1);
+                    break;
+                default:
+                    System.out.println("vui lonh nhap lua chon tu 1 => 9");
             }
         } else {
             System.out.println("ma khong ton tai");
         }
     }
 
-    public void remove() {
-        if (customerList.isEmpty()) {
+    public void remove() throws IOException {
+        List<Customer> customerList2;
+        try {
+            customerList2=dataCustomer.Read();
+        }catch (IOException e){
+            throw new RuntimeException();
+        }
+        if (customerList2.isEmpty()) {
             System.out.println("khong co khach hang");
         } else {
             System.out.println("nhap ma khach hang");
             int customerCode = Integer.parseInt(scanner.nextLine());
             boolean flag = true;
-            for (Customer i : customerList) {
+            for (Customer i : customerList2) {
                 if (customerCode == i.getCustomerCode()) {
                     i.setCustomerCode(customerCode);
                     flag = false;
@@ -269,12 +270,6 @@ public class CustomerServiceImpl implements CustomerService {
                 System.out.println("ma khong ton tai");
             }
         }
+        dataCustomer.write(customerList2);
     }
-
-    public static void main(String[] args) {
-        CustomerServiceImpl a = new CustomerServiceImpl();
-        a.add();
-    }
-
-
 }
