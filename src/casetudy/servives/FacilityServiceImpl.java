@@ -1,5 +1,6 @@
 package casetudy.servives;
 
+import casetudy.models.Facility;
 import casetudy.models.Room;
 import casetudy.models.Villa;
 import casetudy.utils.DataRoom;
@@ -7,18 +8,15 @@ import casetudy.utils.DataVilla;
 import casetudy.utils.Regex;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class FacilityServiceImpl implements FacilityService {
     Scanner scanner = new Scanner(System.in);
     Map<Room, Integer> myRoomList = new LinkedHashMap<>();
     Map<Villa, Integer> myVillaList = new LinkedHashMap<>();
     Regex regex = new Regex();
-    DataRoom dataRoom= new DataRoom();
-    DataVilla dataVilla= new DataVilla();
+    DataRoom dataRoom = new DataRoom();
+    DataVilla dataVilla = new DataVilla();
 
     public void addRoom() {
         String roomCode;
@@ -105,7 +103,7 @@ public class FacilityServiceImpl implements FacilityService {
 
                 flagOfCount = true;
             } catch (NumberFormatException e) {
-                System.out.println("vui long nhap so lan su dung bang chu");
+                System.out.println("vui long nhap so lan su dung bang so");
                 flagOfCount = false;
             }
         } while (!flagOfCount);
@@ -167,7 +165,7 @@ public class FacilityServiceImpl implements FacilityService {
         String chooseOfRentalType;
         String rentalType = null;
         do {
-            System.out.println("vui long chon kieu thue\n" +
+            System.out.println("vui long chon kieu thue \n" +
                     "1.thue theo ngay\n" +
                     "2.thue theo thang\n" +
                     "3.thue theo nam");
@@ -187,7 +185,7 @@ public class FacilityServiceImpl implements FacilityService {
                     System.out.println("vui long nhap lua chon tu 1 => 3");
 
             }
-        } while (chooseOfRentalType.equals("123"));
+        } while ("123".equals(chooseOfRentalType));
         System.out.println("nhap tieu chuan phong");
         String roomStandard = scanner.nextLine();
         System.out.println("nhap dien tich ho boi");
@@ -236,6 +234,41 @@ public class FacilityServiceImpl implements FacilityService {
         myVillaList.put(new Villa(serviceName, usableArea, rentalCost, maximum, rentalType, roomStandard, swimmingPoolArea, numberOfFloor, villaCode), count);
         try {
             dataVilla.write(myVillaList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Facility> maintenance() throws IOException {
+        List<Facility> facilityList = new ArrayList<>();
+        for (Facility i : dataRoom.Read().keySet()) {
+            if (dataRoom.Read().get(i) == 5) {
+                facilityList.add(i);
+            }
+        }
+        for (Facility i : dataVilla.Read().keySet()) {
+            if (dataVilla.Read().get(i) == 5) {
+                facilityList.add(i);
+            }
+        }
+        return facilityList;
+    }
+    public void disPlayListRoom(){
+        try {
+            Map<Room,Integer> room=dataRoom.Read();
+            for (Room i:room.keySet()){
+                System.out.println(i+","+room.get(i));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void displayListVilla(){
+        try {
+            Map<Villa,Integer> villa=dataVilla.Read();
+            for (Villa i:villa.keySet()){
+                System.out.println(i+","+villa.get(i));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,13 +1,17 @@
 package casetudy.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
 public class Booking {
     int bookingCode;
-    int startDay;
-    int finishDay;
+    LocalDate startDay;
+    LocalDate finishDay;
     int customerCode;
     String serviceName;
 
-    public Booking(int bookingCode, int startDay, int finishDay, int customerCode, String serviceName) {
+    public Booking(int bookingCode, LocalDate startDay, LocalDate finishDay, int customerCode, String serviceName) {
         this.bookingCode = bookingCode;
         this.startDay = startDay;
         this.finishDay = finishDay;
@@ -23,19 +27,19 @@ public class Booking {
         this.bookingCode = bookingCode;
     }
 
-    public int getStartDay() {
+    public LocalDate getStartDay() {
         return startDay;
     }
 
-    public void setStartDay(int startDay) {
+    public void setStartDay(LocalDate startDay) {
         this.startDay = startDay;
     }
 
-    public int getFinishDay() {
+    public LocalDate getFinishDay() {
         return finishDay;
     }
 
-    public void setFinishDay(int finishDay) {
+    public void setFinishDay(LocalDate finishDay) {
         this.finishDay = finishDay;
     }
 
@@ -57,12 +61,6 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" +
-                "bookingCode=" + bookingCode +
-                ", startDay=" + startDay +
-                ", finishDay=" + finishDay +
-                ", customerCode=" + customerCode +
-                ", serviceName='" + serviceName + '\'' +
-                '}';
+        return bookingCode+","+startDay+","+finishDay+","+customerCode+","+serviceName;
     }
 }

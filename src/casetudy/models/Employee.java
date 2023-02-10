@@ -48,17 +48,6 @@ public class Employee extends People {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "employeeCode=" + employeeCode +
-                ", level='" + level + '\'' +
-                ", workingPosition='" + workingPosition + '\'' +
-                ", wage=" + wage +
-                ", name='" + name + '\'' +
-                ", dayOfBirth=" + dayOfBirth +
-                ", sex='" + sex + '\'' +
-                ", identityCardNumber=" + identityCardNumber +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                '}';
+        return employeeCode + "," + level + "," + workingPosition + "," + wage + "," + name + "," + dayOfBirth + "," + sex + "," + identityCardNumber + "," + phoneNumber + "," + email;
     }
 }

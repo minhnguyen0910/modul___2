@@ -36,11 +36,11 @@ public class DataRoom {
     }
 
     public void write(Map<Room,Integer> rooms) throws IOException {
-        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_room.csv");
+        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_room.csv",true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
         for (Room i:rooms.keySet()){
-            bufferedWriter.write(i.toString()+","+rooms.get(i));
+            bufferedWriter.write(i.toString()+","+rooms.get(i)+"\n");
         }
         bufferedWriter.close();
     }

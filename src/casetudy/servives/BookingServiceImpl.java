@@ -1,10 +1,180 @@
 package casetudy.servives;
 
-import casetudy.models.Employee;
+import casetudy.models.*;
+import casetudy.utils.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-public class BookingServiceImpl implements BookingService{
+public class BookingServiceImpl implements BookingService {
+    static Scanner scanner = new Scanner(System.in);
+    DataCustomer dataCustomer = new DataCustomer();
+    DataRoom dataRoom = new DataRoom();
+    static DataVilla dataVilla = new DataVilla();
+    DataBooking dataBooking = new DataBooking();
+    Regex regex = new Regex();
 
+    public void addBooking() throws IOException {
+        System.out.println("moi ban nhap ma khach hang co trong list");
+        try {
+            for (Customer i : dataCustomer.Read()) {
+                System.out.println(i);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        int codeCustomer = 0;
+        boolean flagOfCustomerCode = false;
+        do {
+            boolean flag;
+            do {
+                try {
+                    flag = true;
+                    codeCustomer = Integer.parseInt(scanner.nextLine());
+                    flagOfCustomerCode = false;
+                } catch (NumberFormatException e) {
+                    flag = false;
+                    System.out.println("vui long nhap code bang so");
+                }
+            } while (!flag);
+
+            for (Customer i : dataCustomer.Read()) {
+                if (i.getCustomerCode() == codeCustomer) {
+                    flagOfCustomerCode = true;
+                }
+            }
+        } while (!flagOfCustomerCode);
+        System.out.println("moi ban nhap ma dich vu co trong list");
+        try {
+            System.out.println("Room: ");
+            for (Room i : dataRoom.Read().keySet()) {
+                System.out.println(i);
+            }
+            System.out.println("Villa: ");
+            for (Villa i : dataVilla.Read().keySet()) {
+                System.out.println(i);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String codeService;
+        boolean flagOfCodeService = false;
+        String serviceName = null;
+        do {
+            do {
+                System.out.println("nhap ma theo dinh dang SVVL-YYYY hoac SVRO-YYYY");
+                codeService = scanner.nextLine();
+                flagOfCodeService = false;
+            } while (!regex.checkCodeVillaServiceRegex(codeService) && !regex.checkCodeRoomServiceRegex(codeService));
+            Map<Room, Integer> data = dataRoom.Read();
+            for (Room i : data.keySet()) {
+                if (i.getRoomCode().equals(codeService)) {
+                    flagOfCodeService = true;
+                    serviceName = i.getServiceName();
+                    if (data.get(i) >= 5) {
+                        System.out.println("phong can duoc bao tri");
+                    }
+                    break;
+                }
+            }
+            if (!flagOfCodeService) {
+                Map<Villa,Integer> data1=dataVilla.Read();
+                for (Villa i : data1.keySet()) {
+                    if (i.getVillaCode().equals(codeService)) {
+                        serviceName = i.getServiceName();
+                        flagOfCodeService = true;
+                        if (data1.get(i) >= 5) {
+                            System.out.println("villa can duoc bao tri");
+                        }
+                        break;
+                    }
+                }
+            }
+
+        } while (!flagOfCodeService);
+        System.out.println("moi ban nhap ma booking");
+        int bookingCode = 0;
+        boolean flagOfBookingCode = true;
+        do {
+            flagOfBookingCode = true;
+            boolean flag;
+            do {
+                try {
+                    bookingCode = Integer.parseInt(scanner.nextLine());
+                    flag = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("vui long nhap bang so");
+                    flag = false;
+                }
+            } while (!flag);
+
+            for (Booking i : dataBooking.readBooking()) {
+                if (i.getBookingCode() == bookingCode) {
+                    System.out.println("ma da ton tai");
+                    flagOfBookingCode = false;
+                    break;
+                }
+            }
+
+        } while (!flagOfBookingCode);
+        System.out.println("moi ban nhap ngay bat dau");
+        LocalDate startDay = null;
+        String startDays = null;
+        boolean flagOfStartDay = true;
+        do {
+            try {
+                startDays = scanner.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                startDay = LocalDate.parse(startDays, formatter);
+                flagOfStartDay = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("vui long nhap theo dd/MM/yyyy");
+                flagOfStartDay = false;
+            }
+
+
+        } while (!flagOfStartDay);
+        System.out.println("moi ban nhap ngay ket thuc");
+        LocalDate finishDay = null;
+        String finishDays;
+        boolean flagOfFinishDay = true;
+        do {
+            try {
+                finishDays = scanner.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                finishDay = LocalDate.parse(finishDays,formatter);
+                flagOfFinishDay = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("vui long nhap theo dd/MM/yyyy");
+                flagOfFinishDay = false;
+            }
+
+
+        } while (!flagOfFinishDay);
+        Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName);
+        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_bookingg.csv",true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        bufferedWriter.write(booking+"\n");
+        System.out.println(booking);
+
+    }
+    public void displayBooking(){
+        List<Booking> bookingList=dataBooking.readBooking();
+        for (Booking i:bookingList){
+            System.out.println(i);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BookingServiceImpl b = new BookingServiceImpl();
+        b.addBooking();
+    }
 }

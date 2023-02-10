@@ -25,37 +25,33 @@ public class DataEmployee {
             String level=temp[1];
             String workingPosition=temp[2];
             Double wage=Double.parseDouble(temp[3]);
-            String customerType = temp[4];
-            String name = temp[5];
-            int dayOfBirth = Integer.parseInt(temp[6]);
-            String sex = temp[7];
-            int identityCardNumber = Integer.parseInt(temp[8]);
-            int phoneNumber = Integer.parseInt(temp[9]);
-            String email = temp[10];
+            String name = temp[4];
+            int dayOfBirth = Integer.parseInt(temp[5]);
+            String sex = temp[6];
+            int identityCardNumber = Integer.parseInt(temp[7]);
+            int phoneNumber = Integer.parseInt(temp[8]);
+            String email = temp[9];
             customerList1.add(new Employee(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, employeeCode, level,workingPosition,wage));
         }
         bufferedReader.close();
         return customerList1;
     }
-    public void writeEmployee(List<Employee> employeeList){
+    public void writeEmployee(List<Employee> employeeList) throws IOException {
         FileWriter fileWriter= null;
+        StringBuilder stringBuilder=new StringBuilder();
+        BufferedWriter bufferedWriter = null;
         try {
             fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        BufferedWriter bufferedWriter= new BufferedWriter(fileWriter);
+        bufferedWriter= new BufferedWriter(fileWriter);
         for (Employee i: employeeList){
-            try {
-                bufferedWriter.write(i.toString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                bufferedWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            stringBuilder.append(i);
+            stringBuilder.append("\n");
+        }
+        bufferedWriter.write(String.valueOf(stringBuilder));
+        } catch (IOException e) {
+            System.out.println("Can not write to file");
+        } finally {
+            bufferedWriter.close();
         }
     }
 }

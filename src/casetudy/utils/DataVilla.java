@@ -13,7 +13,7 @@ public class DataVilla {
     public Map<Villa,Integer> Read() throws IOException {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_room.csv");
+            fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_villa.csv");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -40,10 +40,10 @@ public class DataVilla {
     }
 
     public void write(Map<Villa,Integer> villas) throws IOException {
-        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_villa.csv");
+        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_villa.csv",true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (Villa i: villas.keySet()){
-            bufferedWriter.write(i.toString()+","+villas.get(i));
+            bufferedWriter.write(i.toString()+","+villas.get(i)+"\n");
         }
         bufferedWriter.close();
     }

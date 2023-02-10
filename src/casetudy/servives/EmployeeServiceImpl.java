@@ -1,5 +1,6 @@
 package casetudy.servives;
 
+import casetudy.controller.FuramaController;
 import casetudy.models.Customer;
 import casetudy.models.Employee;
 import casetudy.utils.DataEmployee;
@@ -12,17 +13,24 @@ import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeServiceImpl implements EmployeeService {
+    DataEmployee dataEmployee = new DataEmployee();
     static List<Employee> employeeList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
-    DataEmployee dataEmployee=new DataEmployee();
+    FuramaController furamaController = new FuramaController();
 
     public void display() {
-        if (employeeList.isEmpty()) {
-            System.out.println("danh sach trong");
-        } else {
-            for (int i = 0; i < employeeList.size(); i++) {
-                System.out.println(employeeList.get(i));
+        List<Employee> employeeList1;
+        try {
+            employeeList1=dataEmployee.readEmployee();
+            if (employeeList1.isEmpty()) {
+                System.out.println("danh sach trong");
+            } else {
+                for (int i = 0; i < employeeList1.size(); i++) {
+                    System.out.println(employeeList1.get(i));
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         boolean flag;
         int employeeCode;
         do {
-             employeeCode = Integer.parseInt(scanner.nextLine());
+            employeeCode = Integer.parseInt(scanner.nextLine());
             flag = true;
             for (Employee i : employeeList) {
                 if (employeeCode == i.getEmployeeCode()) {
@@ -53,62 +61,55 @@ public class EmployeeServiceImpl implements EmployeeService {
                     break;
                 }
             }
-        } while (flag);
-
-        System.out.println("moi ban chon trinh do\n" + "1.trung cap\n" + "2.cao dang\n" + "3.dai hoc\n" + "4.sau dai hoc\n" + "5.khac");
-        int num;
-        do {
-            num = Integer.parseInt(scanner.nextLine());
-            if (num < 1 || num > 5) {
-                System.out.println("nhap lai num");
-            }
-        } while (num < 1 || num > 5);
-
+        } while (!flag);
+        String chooseOfLevel = null;
         String level = null;
-        switch (num) {
-            case 1:
-                level = "trung cap";
-                break;
-            case 2:
-                level = "cao dang";
-                break;
-            case 3:
-                level = "dai hoc";
-                break;
-            case 4:
-                level = "sau dai hoc";
-                break;
-            case 5:
-                level = scanner.nextLine();
-        }
-        System.out.println("vi tri lam viec\n" + "1.le tan\n" + "2.phuc vu\n" + "3.chuyen vien\n" + "4.giam sat\n" + "5.giam doc\n" + "6.vi tri khac");
-        int num1;
+
         do {
-            num1 = Integer.parseInt(scanner.nextLine());
-            if (num1 < 1 || num1 > 5) {
-                System.out.println("nhap lai number");
+            System.out.println("moi ban chon trinh do\n" + "1.trung cap\n" + "2.cao dang\n" + "3.dai hoc\n" + "4.sau dai hoc\n" + "5.khac");
+            chooseOfLevel = scanner.nextLine();
+            switch (chooseOfLevel) {
+                case "1":
+                    level = "trung cap";
+                    break;
+                case "2":
+                    level = "cao dang";
+                    break;
+                case "3":
+                    level = "dai hoc";
+                    break;
+                case "4":
+                    level = "sau dai hoc";
+                    break;
+                case "5":
+                    level = scanner.nextLine();
             }
-        } while (num1 < 1 || num1 > 5);
+        } while ("12345".equals(chooseOfLevel));
+        String chooseOfWorkingPosition = null;
         String workingPosition = null;
-        switch (num1) {
-            case 1:
-                workingPosition = "le tan";
-                break;
-            case 2:
-                workingPosition = "phuc vu";
-                break;
-            case 3:
-                workingPosition = "chuyen vien";
-                break;
-            case 4:
-                workingPosition = "giam sat";
-                break;
-            case 5:
-                workingPosition = "giam doc";
-                break;
-            case 6:
-                workingPosition = scanner.nextLine();
-        }
+        do {
+            System.out.println("vi tri lam viec\n" + "1.le tan\n" + "2.phuc vu\n" + "3.chuyen vien\n" + "4.giam sat\n" + "5.giam doc\n" + "6.vi tri khac");
+            chooseOfWorkingPosition = scanner.nextLine();
+            switch (chooseOfWorkingPosition) {
+                case "1":
+                    workingPosition = "le tan";
+                    break;
+                case "2":
+                    workingPosition = "phuc vu";
+                    break;
+                case "3":
+                    workingPosition = "chuyen vien";
+                    break;
+                case "4":
+                    workingPosition = "giam sat";
+                    break;
+                case "5":
+                    workingPosition = "giam doc";
+                    break;
+                case "6":
+                    workingPosition = scanner.nextLine();
+            }
+        } while (!"123456".contains(chooseOfWorkingPosition));
         System.out.println("nhap so luong");
         Double wage = Double.parseDouble(scanner.nextLine());
         Employee employee = new Employee(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, employeeCode, level, workingPosition, wage);
@@ -118,7 +119,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv", true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(employee.toString());
+            bufferedWriter.write(employee.toString() + "\n");
 
 
         } catch (IOException e) {
@@ -132,34 +133,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public void edit() {
+    public void edit() throws IOException {
         List<Employee> employeeList1;
         try {
-           employeeList1=dataEmployee.readEmployee();
+            employeeList1 = dataEmployee.readEmployee();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         do {
             System.out.println("nhap thong tin can sua\n" + "1.ten\n" + "2.ngay sinh\n" + "3.gioi tinh\n" + "4.so chung minh nhan dan\n" + "5.so dien thoai\n" + "6.email\n" + "7.ma nhan vien\n" + "8.cap do\n" + "9.vi tri lam viec\n" + "10.luong\n" +
                     "11.luu thay doi\n" +
-                    "12.exit");
-            String choose=scanner.nextLine();
+                    "12.return main menu");
+            String choose = scanner.nextLine();
 
             switch (choose) {
                 case "1": {
-                    boolean flag = true;
+                    boolean flag = false;
                     System.out.println("nhap ten can sua");
                     String nameBefore = scanner.nextLine();
                     System.out.println("nhap ten moi");
                     String nameAfter = scanner.nextLine();
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (nameAfter.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setName(nameAfter);
-                            flag = false;
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (nameAfter.contains(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setName(nameAfter);
+                            flag = true;
                         }
                     }
-                    if (flag) {
-                        System.out.println("tên không tồn tại");
+                    if (!flag) {
+                        System.out.println("ten khong ton tai");
 
                     }
                 }
@@ -170,9 +171,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap ngay moi");
                     int day = Integer.parseInt(scanner.nextLine());
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setDayOfBirth(day);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setDayOfBirth(day);
                             flag = false;
                         }
                     }
@@ -188,9 +189,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap gioi tinh");
                     String sex = scanner.nextLine();
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setSex(sex);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setSex(sex);
                             flag = false;
                         }
                     }
@@ -206,9 +207,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap so chung minh nhan dan moi");
                     int identityCardNumber = Integer.parseInt(scanner.nextLine());
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setDayOfBirth(identityCardNumber);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setDayOfBirth(identityCardNumber);
                             flag = false;
                         }
                     }
@@ -224,14 +225,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap so dien thoai moi");
                     int phoneNumber = Integer.parseInt(scanner.nextLine());
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setPhoneNumber(phoneNumber);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setPhoneNumber(phoneNumber);
                             flag = false;
                         }
                     }
                     if (flag) {
-                        System.out.println("tên không tồn tại");
+                        System.out.println("ten khong ton tai");
 
                     }
                     break;
@@ -242,9 +243,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap email moi");
                     String email = scanner.nextLine();
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setEmail(email);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setEmail(email);
                             flag = false;
                         }
                     }
@@ -260,9 +261,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap ma cong nhan moi");
                     int employeeCode = Integer.parseInt(scanner.nextLine());
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setEmployeeCode(employeeCode);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setEmployeeCode(employeeCode);
                             flag = false;
                         }
                     }
@@ -278,9 +279,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("cap nhat lai trinh do");
                     String level = scanner.nextLine();
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setLevel(level);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setLevel(level);
                             flag = false;
                         }
                     }
@@ -296,9 +297,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap vi tri lam viec moi");
                     String workingPosition = scanner.nextLine();
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setWorkingPosition(workingPosition);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setWorkingPosition(workingPosition);
                             flag = false;
                         }
                     }
@@ -314,9 +315,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                     String name = scanner.nextLine();
                     System.out.println("nhap so luong moi");
                     Double wage = Double.parseDouble(scanner.nextLine());
-                    for (int i = 0; i < employeeList.size(); i++) {
-                        if (name.equals(employeeList.get(i).getName())) {
-                            employeeList.get(i).setWage(wage);
+                    for (int i = 0; i < employeeList1.size(); i++) {
+                        if (name.equals(employeeList1.get(i).getName())) {
+                            employeeList1.get(i).setWage(wage);
                             flag = false;
                         }
                     }
@@ -326,22 +327,26 @@ public class EmployeeServiceImpl implements EmployeeService {
                     }
                     break;
                 }
-                case "11":
-                    dataEmployee.writeEmployee(employeeList1);
                 case "12":
-                    System.exit(1);
+                    try {
+                        furamaController.displayMainMenu();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 default:
                     System.out.println("vui long nhap lua hon tu 1 => 12");
 
             }
+            System.out.println(employeeList1);
+            dataEmployee.writeEmployee(employeeList1);
         } while (true);
     }
 
     public void delete() {
         List<Employee> employeeList1;
         try {
-            employeeList1=dataEmployee.readEmployee();
+            employeeList1 = dataEmployee.readEmployee();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

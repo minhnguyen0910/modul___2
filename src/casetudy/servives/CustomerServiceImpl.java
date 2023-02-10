@@ -13,9 +13,9 @@ import java.util.Scanner;
 public class CustomerServiceImpl implements CustomerService {
     Scanner scanner = new Scanner(System.in);
     static List<Customer> customerList = new LinkedList<>();
-    DataCustomer dataCustomer=new DataCustomer();
+    DataCustomer dataCustomer = new DataCustomer();
 
-    public void add() {
+    public void add() throws IOException {
         System.out.println("ten khach hang");
         String name = scanner.nextLine();
         System.out.println("ngay sinh");
@@ -28,22 +28,25 @@ public class CustomerServiceImpl implements CustomerService {
         int phoneNumber = Integer.parseInt(scanner.nextLine());
         System.out.println("email");
         String email = scanner.nextLine();
-        System.out.println("ma khach hang");
         int customerCode;
-        boolean flagOfCustomer;
+        boolean flagOfCustomerCode;
+        System.out.println("ma khach hang");
         do {
             customerCode = Integer.parseInt(scanner.nextLine());
-            flagOfCustomer = true;
-            for (Customer i : customerList) {
-                if (customerCode == i.getCustomerCode()) {
-                    System.out.println("ma da ton tai\n" +
-                            "vui long nhap ma khac");
-                    flagOfCustomer = false;
+            flagOfCustomerCode = true;
+            for (Customer i : dataCustomer.Read()) {
+                if (i.getCustomerCode() == customerCode) {
+                    flagOfCustomerCode = false;
                 }
             }
-        } while (!flagOfCustomer);
+
+            if (!flagOfCustomerCode) {
+                System.out.println("ma da ton tai\n" +
+                        "vui long nhap lai");
+            }
+        } while (!flagOfCustomerCode);
         String customerType = null;
-        String chooseOfCustomerType = null;
+        String chooseOfCustomerType;
         do {
             System.out.println("chon kieu khach hang\n" +
                     "1.Diamond\n" +
@@ -51,8 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
                     "3.Gold\n" +
                     "4.Silver\n" +
                     "5.Member");
-            String choose = scanner.nextLine();
-            switch (choose) {
+            chooseOfCustomerType = scanner.nextLine();
+            switch (chooseOfCustomerType) {
                 case "1":
                     customerType = "Diamond";
                     break;
@@ -72,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
                     System.out.println("vui long nhap lua chon tu 1 => 5");
 
             }
-        } while (!chooseOfCustomerType.equals("12345"));
+        } while (!"12345".contains(chooseOfCustomerType));
         Customer newCustomer = new Customer(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, customerCode, customerType);
         customerList.add(newCustomer);
         FileWriter fileWriter;
@@ -80,7 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_customer.csv", true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(newCustomer.toString());
+            bufferedWriter.write(newCustomer.toString() + "\n");
 
 
         } catch (IOException e) {
@@ -96,17 +99,21 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     public void display() {
-        if (customerList.isEmpty()) {
-            System.out.println("không có khách hàng");
-        } else {
-            for (People i : customerList) {
-                System.out.println(i);
+        try {
+            if (dataCustomer.Read().isEmpty()) {
+                System.out.println("không có khách hàng");
+            } else {
+                for (People i : dataCustomer.Read()) {
+                    System.out.println(i);
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void edit() throws IOException {
-        List<Customer> customerList1= dataCustomer.Read();
+        List<Customer> customerList1 = dataCustomer.Read();
 
         System.out.println("nhap ma khách hang");
         int customerCode = Integer.parseInt(scanner.nextLine());
@@ -235,12 +242,10 @@ public class CustomerServiceImpl implements CustomerService {
 
                     } while (!chooseOfCustomerType.equals("12345"));
                     break;
-                case "9":
-                    dataCustomer.write(customerList1);
-                    break;
                 default:
                     System.out.println("vui lonh nhap lua chon tu 1 => 9");
             }
+            dataCustomer.write(customerList1);
         } else {
             System.out.println("ma khong ton tai");
         }
@@ -249,8 +254,8 @@ public class CustomerServiceImpl implements CustomerService {
     public void remove() throws IOException {
         List<Customer> customerList2;
         try {
-            customerList2=dataCustomer.Read();
-        }catch (IOException e){
+            customerList2 = dataCustomer.Read();
+        } catch (IOException e) {
             throw new RuntimeException();
         }
         if (customerList2.isEmpty()) {

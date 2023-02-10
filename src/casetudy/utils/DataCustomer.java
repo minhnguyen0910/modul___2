@@ -30,6 +30,7 @@ public class DataCustomer {
             String email = temp[7];
             customerList1.add(new Customer(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, customerCode, customerType));
 
+
         }
         bufferedReader.close();
         return customerList1;
