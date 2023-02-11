@@ -1,9 +1,10 @@
 package casetudy.servives;
 
 import casetudy.controller.FuramaController;
-import casetudy.models.Customer;
 import casetudy.models.Employee;
+import casetudy.servives.interfacee.IEmployeeService;
 import casetudy.utils.DataEmployee;
+import casetudy.utils.HangSo;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl implements IEmployeeService {
     DataEmployee dataEmployee = new DataEmployee();
     static List<Employee> employeeList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
@@ -117,7 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         FileWriter fileWriter;
         BufferedWriter bufferedWriter = null;
         try {
-            fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv", true);
+            fileWriter = new FileWriter(HangSo.FILE_EMPLOYEE, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(employee.toString() + "\n");
 

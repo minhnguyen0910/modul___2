@@ -7,13 +7,15 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class DataBooking {
-    public List<Booking> readBooking() {
-        List<Booking> bookingList = new ArrayList<>();
-        BufferedReader bufferedReader=null;
+    public Set<Booking> readBooking() {
+        Set<Booking> bookingSet=new TreeSet<>();
+        BufferedReader bufferedReader = null;
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_booking.csv");
+            FileReader fileReader = new FileReader(HangSo.FILE_BOOKING);
             bufferedReader = new BufferedReader(fileReader);
             String line;
             String[] temp = null;
@@ -24,27 +26,19 @@ public class DataBooking {
                 LocalDate finishDay = LocalDate.parse(temp[2]);
                 int customerCode = Integer.parseInt(temp[3]);
                 String serviceName = temp[4];
-                bookingList.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName));
+                bookingSet.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName));
 
             }
-
-        } catch (IIOException e) {
-            throw new RuntimeException();
+            bufferedReader.close();
         } catch (IOException e) {
-            throw new RuntimeException();
-        }finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
         }
-        return bookingList;
+        return bookingSet;
     }
     public void writeBooking(List<Booking> bookingList){
         BufferedWriter bufferedWriter= null;
         try {
-            FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_bookingg.csv");
+            FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING);
             bufferedWriter = new BufferedWriter(fileWriter);
             for (Booking i : bookingList) {
                 bufferedWriter.write(i + ",");

@@ -10,7 +10,7 @@ public class DataCustomer {
     public List<Customer> Read() throws IOException {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_customer.csv");
+            fileReader = new FileReader(HangSo.FILE_CUSTOMER);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +36,7 @@ public class DataCustomer {
         return customerList1;
     }
     public void write(List<Customer> customerList1) throws IOException {
-        FileWriter fileWriter=new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_customer.csv");
+        FileWriter fileWriter=new FileWriter(HangSo.FILE_CUSTOMER);
         BufferedWriter bufferedWriter= new BufferedWriter(fileWriter);
         for (Customer i:customerList1){
             bufferedWriter.write(i.toString()+"\n");

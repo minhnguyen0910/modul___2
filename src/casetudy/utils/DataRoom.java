@@ -10,7 +10,7 @@ public class DataRoom {
     public Map<Room,Integer> Read() throws IOException {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_room.csv");
+            fileReader = new FileReader(HangSo.FILE_ROOM);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +36,7 @@ public class DataRoom {
     }
 
     public void write(Map<Room,Integer> rooms) throws IOException {
-        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_room.csv",true);
+        FileWriter fileWriter = new FileWriter(HangSo.FILE_ROOM);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
         for (Room i:rooms.keySet()){

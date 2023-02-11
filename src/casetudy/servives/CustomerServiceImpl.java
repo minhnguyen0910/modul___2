@@ -2,15 +2,16 @@ package casetudy.servives;
 
 import casetudy.models.Customer;
 import casetudy.models.People;
+import casetudy.servives.interfacee.ICustomerService;
 import casetudy.utils.DataCustomer;
+import casetudy.utils.HangSo;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl implements ICustomerService {
     Scanner scanner = new Scanner(System.in);
     static List<Customer> customerList = new LinkedList<>();
     DataCustomer dataCustomer = new DataCustomer();
@@ -81,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
         FileWriter fileWriter;
         BufferedWriter bufferedWriter = null;
         try {
-            fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_customer.csv", true);
+            fileWriter = new FileWriter(HangSo.FILE_CUSTOMER, true);
             bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(newCustomer.toString() + "\n");
 

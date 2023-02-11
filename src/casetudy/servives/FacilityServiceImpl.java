@@ -3,14 +3,18 @@ package casetudy.servives;
 import casetudy.models.Facility;
 import casetudy.models.Room;
 import casetudy.models.Villa;
+import casetudy.servives.interfacee.IFacilityService;
 import casetudy.utils.DataRoom;
 import casetudy.utils.DataVilla;
+import casetudy.utils.HangSo;
 import casetudy.utils.Regex;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class FacilityServiceImpl implements FacilityService {
+public class FacilityServiceImpl implements IFacilityService {
     Scanner scanner = new Scanner(System.in);
     Map<Room, Integer> myRoomList = new LinkedHashMap<>();
     Map<Villa, Integer> myVillaList = new LinkedHashMap<>();
@@ -18,7 +22,7 @@ public class FacilityServiceImpl implements FacilityService {
     DataRoom dataRoom = new DataRoom();
     DataVilla dataVilla = new DataVilla();
 
-    public void addRoom() {
+    public void addRoom() throws IOException {
         String roomCode;
         do {
             System.out.println("nhap ma phong theo SVRO-YYYY");
@@ -108,17 +112,21 @@ public class FacilityServiceImpl implements FacilityService {
             }
         } while (!flagOfCount);
         Room room = new Room(serviceName, usableArea, rentalCost, maximum, rentalType, roomCode, freeServiceIncluded);
-        myRoomList.put(room, count);
+        BufferedWriter bufferedWriter = null;
         try {
-            dataRoom.write(myRoomList);
+            FileWriter fileWriter = new FileWriter(HangSo.FILE_ROOM,true);
+             bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(room + "," + count+"\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }finally {
+            bufferedWriter.close();
         }
 
 
     }
 
-    public void addVilla() {
+    public void addVilla() throws IOException {
         String villaCode;
         do {
             System.out.println("nhap ma villa theo dinh dang SVVL-YYYY");
@@ -231,11 +239,16 @@ public class FacilityServiceImpl implements FacilityService {
                 flagOfCount = false;
             }
         } while (!flagOfCount);
-        myVillaList.put(new Villa(serviceName, usableArea, rentalCost, maximum, rentalType, roomStandard, swimmingPoolArea, numberOfFloor, villaCode), count);
+        Villa villa =new Villa(serviceName, usableArea, rentalCost, maximum, rentalType, roomStandard, swimmingPoolArea, numberOfFloor, villaCode);
+        BufferedWriter bufferedWriter = null;
         try {
-            dataVilla.write(myVillaList);
+            FileWriter fileWriter = new FileWriter(HangSo.FILE_VILLA,true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(villa + "," + count+"\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }finally {
+            bufferedWriter.close();
         }
     }
 
@@ -253,31 +266,33 @@ public class FacilityServiceImpl implements FacilityService {
         }
         return facilityList;
     }
-    public void disPlayListRoom(){
+
+    public void disPlayListRoom() {
         try {
-            Map<Room,Integer> room=dataRoom.Read();
-            for (Room i:room.keySet()){
-                System.out.println(i+","+room.get(i));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void displayListVilla(){
-        try {
-            Map<Villa,Integer> villa=dataVilla.Read();
-            for (Villa i:villa.keySet()){
-                System.out.println(i+","+villa.get(i));
+            Map<Room, Integer> room = dataRoom.Read();
+            for (Room i : room.keySet()) {
+                System.out.println(i + "," + room.get(i));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void main(String[] args) {
+    public void displayListVilla() {
+        try {
+            Map<Villa, Integer> villa = dataVilla.Read();
+            for (Villa i : villa.keySet()) {
+                System.out.println(i + "," + villa.get(i));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
         FacilityServiceImpl a = new FacilityServiceImpl();
-        a.addRoom();
-        a.addVilla();
+       a.addVilla();
+       a.addRoom();
 
     }
 }

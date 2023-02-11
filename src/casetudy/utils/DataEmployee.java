@@ -11,7 +11,7 @@ public class DataEmployee {
     public List<Employee> readEmployee() throws IOException {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv");
+            fileReader = new FileReader(HangSo.FILE_EMPLOYEE);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +41,7 @@ public class DataEmployee {
         StringBuilder stringBuilder=new StringBuilder();
         BufferedWriter bufferedWriter = null;
         try {
-            fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_employee.csv");
+            fileWriter = new FileWriter(HangSo.FILE_EMPLOYEE);
         bufferedWriter= new BufferedWriter(fileWriter);
         for (Employee i: employeeList){
             stringBuilder.append(i);

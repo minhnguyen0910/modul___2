@@ -1,6 +1,8 @@
 package casetudy.servives;
 
+import casetudy.controller.FuramaController;
 import casetudy.models.*;
+import casetudy.servives.interfacee.IBookingService;
 import casetudy.utils.*;
 
 import java.io.BufferedWriter;
@@ -9,18 +11,17 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-public class BookingServiceImpl implements BookingService {
+public class BookingServiceImpl implements IBookingService {
     static Scanner scanner = new Scanner(System.in);
     DataCustomer dataCustomer = new DataCustomer();
     DataRoom dataRoom = new DataRoom();
     static DataVilla dataVilla = new DataVilla();
     DataBooking dataBooking = new DataBooking();
     Regex regex = new Regex();
+    FuramaController furamaController = new FuramaController();
+    Set<Booking> bookingSet=new TreeSet<>();
 
     public void addBooking() throws IOException {
         System.out.println("moi ban nhap ma khach hang co trong list");
@@ -68,6 +69,9 @@ public class BookingServiceImpl implements BookingService {
         String codeService;
         boolean flagOfCodeService = false;
         String serviceName = null;
+        int count = 0;
+        Room room = null;
+        Villa villa = null;
         do {
             do {
                 System.out.println("nhap ma theo dinh dang SVVL-YYYY hoac SVRO-YYYY");
@@ -77,6 +81,8 @@ public class BookingServiceImpl implements BookingService {
             Map<Room, Integer> data = dataRoom.Read();
             for (Room i : data.keySet()) {
                 if (i.getRoomCode().equals(codeService)) {
+                    count = data.get(i);
+                    room = i;
                     flagOfCodeService = true;
                     serviceName = i.getServiceName();
                     if (data.get(i) >= 5) {
@@ -86,9 +92,11 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
             if (!flagOfCodeService) {
-                Map<Villa,Integer> data1=dataVilla.Read();
+                Map<Villa, Integer> data1 = dataVilla.Read();
                 for (Villa i : data1.keySet()) {
                     if (i.getVillaCode().equals(codeService)) {
+                        count = data1.get(i);
+                        villa = i;
                         serviceName = i.getServiceName();
                         flagOfCodeService = true;
                         if (data1.get(i) >= 5) {
@@ -114,8 +122,8 @@ public class BookingServiceImpl implements BookingService {
                     System.out.println("vui long nhap bang so");
                     flag = false;
                 }
-            } while (!flag);
 
+            } while (!flag);
             for (Booking i : dataBooking.readBooking()) {
                 if (i.getBookingCode() == bookingCode) {
                     System.out.println("ma da ton tai");
@@ -150,7 +158,7 @@ public class BookingServiceImpl implements BookingService {
             try {
                 finishDays = scanner.nextLine();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                finishDay = LocalDate.parse(finishDays,formatter);
+                finishDay = LocalDate.parse(finishDays, formatter);
                 flagOfFinishDay = true;
             } catch (DateTimeParseException e) {
                 System.out.println("vui long nhap theo dd/MM/yyyy");
@@ -159,22 +167,65 @@ public class BookingServiceImpl implements BookingService {
 
 
         } while (!flagOfFinishDay);
-        Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName);
-        FileWriter fileWriter = new FileWriter("C:\\Users\\ADMIN\\Desktop\\codegym\\modul_2\\src\\casetudy\\data\\file_of_bookingg.csv",true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(booking+"\n");
-        System.out.println(booking);
+        String choosess;
+        do {
+            System.out.println("xac nhan\n" +
+                    "1.ok\n" +
+                    "2.ko");
+            choosess = scanner.nextLine();
+            switch (choosess) {
+                case "1":
+                    Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName);
+                    FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING, true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(booking + "\n");
+                    bufferedWriter.close();
+                    bookingSet.add(booking);
+
+                    if (villa != null) {
+                        count++;
+                        Map<Villa, Integer> a = dataVilla.Read();
+                        a.replace(villa, count);
+                        dataVilla.write(a);
+
+                    } else if (room!=null){
+                        count++;
+                        Map<Room, Integer> b = dataRoom.Read();
+                        b.replace(room, count);
+                        dataRoom.write(b);
+
+                    }
+                    break;
+                case "2":
+                    furamaController.displayMainMenu();
+            }
+        } while (!"12".contains(choosess));
+
 
     }
-    public void displayBooking(){
-        List<Booking> bookingList=dataBooking.readBooking();
-        for (Booking i:bookingList){
+
+    public void displayBooking() {
+        Set<Booking> bookingList = dataBooking.readBooking();
+        for (Booking i : bookingList) {
             System.out.println(i);
         }
+    }
+    public void resetTheNumberOfUses() throws IOException {
+        Map<Room,Integer> data=dataRoom.Read();
+        Map<Villa,Integer> dat=dataVilla.Read();
+        for (Room i:data.keySet()){
+            data.replace(i,0);
+        }
+        dataRoom.write(data);
+        for (Villa i:dat.keySet()){
+            dat.replace(i,0);
+        }
+        dataVilla.write(dat);
     }
 
     public static void main(String[] args) throws IOException {
         BookingServiceImpl b = new BookingServiceImpl();
         b.addBooking();
+//        b.resetTheNumberOfUses();
     }
 }
