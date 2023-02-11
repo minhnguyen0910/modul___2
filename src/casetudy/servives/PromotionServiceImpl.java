@@ -5,6 +5,7 @@ import casetudy.servives.interfacee.IPromotionServiceImpl;
 import casetudy.utils.DataBooking;
 import com.sun.source.tree.Tree;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
     DataBooking dataBooking=new DataBooking();
     Scanner scanner= new Scanner(System.in);
     public void showCustomers(){
-        Set<Booking> bookingSet=dataBooking.readBooking();
+        List<Booking> bookingList=dataBooking.readBooking();
         System.out.println("moi ban nhap nam tim kiem");
         int year = 0;
         boolean flagCheckYear1=true;
@@ -28,7 +29,7 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
                     System.out.println("vui long nhap bang so");
                 }
             }while (!flagCheckYear);
-            for (Booking i:bookingSet){
+            for (Booking i:bookingList){
                 if (year==5){
                     
                 }

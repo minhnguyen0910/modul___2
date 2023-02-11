@@ -27,6 +27,7 @@ public class BookingServiceImpl implements IBookingService {
     public void addBooking() throws IOException {
         Map<Villa, Integer> villaIntegerMap1 = dataVilla.Read();
         Map<Room, Integer> roomIntegerMap = dataRoom.Read();
+        List<Booking> bookingList=dataBooking.readBooking();
 
         System.out.println("moi ban nhap ma khach hang co trong list");
         try {
@@ -183,7 +184,9 @@ public class BookingServiceImpl implements IBookingService {
                     bufferedWriter.write(booking + "\n");
                     bufferedWriter.close();
                     bookingSet.add(booking);
-
+                    List<Booking> bookingList1=dataBooking.readBooking();
+                    Collections.sort(bookingList1);
+                    dataBooking.writeBooking(bookingList1);
                     if (villa != null) {
                         count++;
                         villaIntegerMap1.replace(villa,count);
@@ -205,7 +208,7 @@ public class BookingServiceImpl implements IBookingService {
     }
 
     public void displayBooking() {
-        Set<Booking> bookingList = dataBooking.readBooking();
+        List<Booking> bookingList = dataBooking.readBooking();
         for (Booking i : bookingList) {
             System.out.println(i);
         }

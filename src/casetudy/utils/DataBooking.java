@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class DataBooking {
-    public Set<Booking> readBooking() {
-        Set<Booking> bookingSet=new TreeSet<>();
+    public List<Booking> readBooking() {
+        List<Booking> bookingList=new ArrayList<>();
         BufferedReader bufferedReader = null;
         try {
             FileReader fileReader = new FileReader(HangSo.FILE_BOOKING);
@@ -26,14 +26,14 @@ public class DataBooking {
                 LocalDate finishDay = LocalDate.parse(temp[2]);
                 int customerCode = Integer.parseInt(temp[3]);
                 String serviceName = temp[4];
-                bookingSet.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName));
+                bookingList.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName));
 
             }
             bufferedReader.close();
         } catch (IOException e) {
 
         }
-        return bookingSet;
+        return bookingList;
     }
     public void writeBooking(List<Booking> bookingList){
         BufferedWriter bufferedWriter= null;
@@ -41,7 +41,7 @@ public class DataBooking {
             FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING);
             bufferedWriter = new BufferedWriter(fileWriter);
             for (Booking i : bookingList) {
-                bufferedWriter.write(i + ",");
+                bufferedWriter.write(i + "\n");
             }
         }catch (IOException e){
             throw new RuntimeException();

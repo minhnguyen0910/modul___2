@@ -1,4 +1,4 @@
 package casetudy.servives.interfacee;
 
-public interface IPromotionServiceImpl extends Service {
+public interface IPromotionServiceImpl extends IService {
 }

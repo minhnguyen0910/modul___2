@@ -1,4 +1,4 @@
 package casetudy.servives.interfacee;
 
-public interface Service {
+public interface IService {
 }

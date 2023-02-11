@@ -44,7 +44,6 @@ public class DataVilla {
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (Villa i: villas.keySet()){
             bufferedWriter.write(i+","+villas.get(i)+"\n");
-            System.out.println(i+" "+villas.get(i));
         }
         bufferedWriter.close();
     }
