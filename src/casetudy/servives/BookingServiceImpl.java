@@ -14,6 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class BookingServiceImpl implements IBookingService {
+    static Map<Villa,Integer> villaIntegerMap=new LinkedHashMap<>();
     static Scanner scanner = new Scanner(System.in);
     DataCustomer dataCustomer = new DataCustomer();
     DataRoom dataRoom = new DataRoom();
@@ -24,6 +25,9 @@ public class BookingServiceImpl implements IBookingService {
     Set<Booking> bookingSet=new TreeSet<>();
 
     public void addBooking() throws IOException {
+        Map<Villa, Integer> villaIntegerMap1 = dataVilla.Read();
+        Map<Room, Integer> roomIntegerMap = dataRoom.Read();
+
         System.out.println("moi ban nhap ma khach hang co trong list");
         try {
             for (Customer i : dataCustomer.Read()) {
@@ -78,28 +82,26 @@ public class BookingServiceImpl implements IBookingService {
                 codeService = scanner.nextLine();
                 flagOfCodeService = false;
             } while (!regex.checkCodeVillaServiceRegex(codeService) && !regex.checkCodeRoomServiceRegex(codeService));
-            Map<Room, Integer> data = dataRoom.Read();
-            for (Room i : data.keySet()) {
+            for (Room i : roomIntegerMap.keySet()) {
                 if (i.getRoomCode().equals(codeService)) {
-                    count = data.get(i);
+                    count = roomIntegerMap.get(i);
                     room = i;
                     flagOfCodeService = true;
                     serviceName = i.getServiceName();
-                    if (data.get(i) >= 5) {
+                    if (roomIntegerMap.get(i) >= 5) {
                         System.out.println("phong can duoc bao tri");
                     }
                     break;
                 }
             }
             if (!flagOfCodeService) {
-                Map<Villa, Integer> data1 = dataVilla.Read();
-                for (Villa i : data1.keySet()) {
+                for (Villa i : villaIntegerMap1.keySet()) {
                     if (i.getVillaCode().equals(codeService)) {
-                        count = data1.get(i);
+                        count = villaIntegerMap1.get(i);
                         villa = i;
                         serviceName = i.getServiceName();
                         flagOfCodeService = true;
-                        if (data1.get(i) >= 5) {
+                        if (villaIntegerMap1.get(i) >= 5) {
                             System.out.println("villa can duoc bao tri");
                         }
                         break;
@@ -184,15 +186,13 @@ public class BookingServiceImpl implements IBookingService {
 
                     if (villa != null) {
                         count++;
-                        Map<Villa, Integer> a = dataVilla.Read();
-                        a.replace(villa, count);
-                        dataVilla.write(a);
+                        villaIntegerMap1.replace(villa,count);
+                        dataVilla.write(villaIntegerMap1);
 
                     } else if (room!=null){
                         count++;
-                        Map<Room, Integer> b = dataRoom.Read();
-                        b.replace(room, count);
-                        dataRoom.write(b);
+                        roomIntegerMap.put(room, count);
+                        dataRoom.write(roomIntegerMap);
 
                     }
                     break;
@@ -225,7 +225,7 @@ public class BookingServiceImpl implements IBookingService {
 
     public static void main(String[] args) throws IOException {
         BookingServiceImpl b = new BookingServiceImpl();
-        b.addBooking();
+       b.addBooking();
 //        b.resetTheNumberOfUses();
     }
 }
