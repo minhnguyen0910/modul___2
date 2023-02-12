@@ -38,16 +38,13 @@ public class DataEmployee {
     }
     public void writeEmployee(List<Employee> employeeList) throws IOException {
         FileWriter fileWriter= null;
-        StringBuilder stringBuilder=new StringBuilder();
         BufferedWriter bufferedWriter = null;
         try {
             fileWriter = new FileWriter(HangSo.FILE_EMPLOYEE);
         bufferedWriter= new BufferedWriter(fileWriter);
         for (Employee i: employeeList){
-            stringBuilder.append(i);
-            stringBuilder.append("\n");
+            bufferedWriter.write(i.toString()+"\n");
         }
-        bufferedWriter.write(String.valueOf(stringBuilder));
         } catch (IOException e) {
             System.out.println("Can not write to file");
         } finally {

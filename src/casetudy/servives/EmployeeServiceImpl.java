@@ -22,7 +22,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public void display() {
         List<Employee> employeeList1;
         try {
-            employeeList1=dataEmployee.readEmployee();
+            employeeList1 = dataEmployee.readEmployee();
             if (employeeList1.isEmpty()) {
                 System.out.println("danh sach trong");
             } else {
@@ -182,8 +182,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "3": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -200,8 +200,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "4": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -218,8 +218,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "5": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -236,8 +236,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("ten khong ton tai");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "6": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -254,8 +254,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "7": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -272,8 +272,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "8": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -290,8 +290,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "9": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -308,8 +308,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("tên không tồn tại");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "10": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -326,8 +326,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         System.out.println("ten khong ton tai");
 
                     }
-                    break;
-                }
+
+                }break;
                 case "12":
                     try {
                         furamaController.displayMainMenu();
@@ -339,7 +339,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     System.out.println("vui long nhap lua hon tu 1 => 12");
 
             }
-            System.out.println(employeeList1);
             dataEmployee.writeEmployee(employeeList1);
         } while (true);
     }
@@ -348,20 +347,22 @@ public class EmployeeServiceImpl implements IEmployeeService {
         List<Employee> employeeList1;
         try {
             employeeList1 = dataEmployee.readEmployee();
+            System.out.println("nhap ma nhan vien");
+            int codeEmployee = Integer.parseInt(scanner.nextLine());
+            if (employeeList1.isEmpty()) {
+                System.out.println("khong co nhan vien");
+            } else {
+                for (int i=0; i<employeeList1.size();i++) {
+                    if (codeEmployee==employeeList1.get(i).getEmployeeCode()) {
+                        employeeList1.remove(i);
+                    }
+                }
+            }
+            dataEmployee.writeEmployee(employeeList1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("nhap ten can xoa");
-        String name = scanner.nextLine();
-        if (employeeList1.isEmpty()) {
-            System.out.println("khong co nhan vien");
-        } else {
-            for (int i = 0; i < employeeList1.size(); i++) {
-                if (name.equals(employeeList1.get(i).getName())) {
-                    employeeList1.remove(i);
-                }
-            }
-        }
+
     }
 }
 

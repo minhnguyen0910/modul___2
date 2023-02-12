@@ -252,19 +252,21 @@ public class FacilityServiceImpl implements IFacilityService {
         }
     }
 
-    public List<Facility> maintenance() throws IOException {
+    public void maintenance() throws IOException {
         List<Facility> facilityList = new ArrayList<>();
-        for (Facility i : dataRoom.Read().keySet()) {
-            if (dataRoom.Read().get(i) == 5) {
+        Map<Room,Integer> roomIntegerMap=dataRoom.Read();
+        Map<Villa,Integer> villaIntegerMap=dataVilla.Read();
+        for (Facility i : roomIntegerMap.keySet()) {
+            if (roomIntegerMap.get(i)>= 5) {
                 facilityList.add(i);
             }
         }
-        for (Facility i : dataVilla.Read().keySet()) {
-            if (dataVilla.Read().get(i) == 5) {
+        for (Facility i : villaIntegerMap.keySet()) {
+            if (villaIntegerMap.get(i) >= 5) {
                 facilityList.add(i);
             }
         }
-        return facilityList;
+        System.out.println(facilityList);
     }
 
     public void disPlayListRoom() {
@@ -287,12 +289,5 @@ public class FacilityServiceImpl implements IFacilityService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        FacilityServiceImpl a = new FacilityServiceImpl();
-       a.addVilla();
-       a.addRoom();
-
     }
 }

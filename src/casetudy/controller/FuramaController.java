@@ -3,10 +3,7 @@ package casetudy.controller;
 import casetudy.models.Facility;
 import casetudy.models.Room;
 import casetudy.models.Villa;
-import casetudy.servives.BookingServiceImpl;
-import casetudy.servives.CustomerServiceImpl;
-import casetudy.servives.EmployeeServiceImpl;
-import casetudy.servives.FacilityServiceImpl;
+import casetudy.servives.*;
 import casetudy.utils.DataRoom;
 import casetudy.utils.DataVilla;
 
@@ -22,8 +19,7 @@ public class FuramaController {
         CustomerServiceImpl customerService = new CustomerServiceImpl();
         FacilityServiceImpl facilityService = new FacilityServiceImpl();
         BookingServiceImpl bookingService=new BookingServiceImpl();
-        DataVilla dataVilla = new DataVilla();
-        DataRoom dataRoom = new DataRoom();
+        PromotionServiceImpl promotionService=new PromotionServiceImpl();
 
         do {
             System.out.println("nhap lua chon cua ban\n" +
@@ -137,9 +133,7 @@ public class FuramaController {
                             }
                             break;
                         case "3":
-                            for (Facility i: facilityService.maintenance()){
-                                System.out.println(i);
-                            }
+                            facilityService.maintenance();
                             break;
                         case "4":
                             displayMainMenu();
@@ -165,9 +159,29 @@ public class FuramaController {
                             break;
                         case "4":
                             System.exit(1);
+                            break;
+                        default:
+                            System.out.println("vui long nhap lua chon tu 1 => 4");
                     }
                     break;
                 case "5":
+                    System.out.println("1.Display list customers use service\n" +
+                            "2.Display list customers get voucher\n" +
+                            "3.Return main menu");
+                    String chooseOfCase5=scanner.nextLine();
+                    switch (chooseOfCase5){
+                        case "1":
+                            promotionService.showCustomers();
+                            break;
+                        case "2":
+                            promotionService.checkPromotion();
+                            break;
+                        case "3":
+                            displayMainMenu();
+                            break;
+                        default:
+                            System.out.println("vui long nhap lua chon tu 1 => 3");
+                    }
                     break;
                 case "6":
                     System.exit(1);

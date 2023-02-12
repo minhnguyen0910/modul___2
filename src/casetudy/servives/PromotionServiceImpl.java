@@ -17,8 +17,8 @@ import java.util.*;
 public class PromotionServiceImpl implements IPromotionServiceImpl {
     DataCustomer dataCustomer = new DataCustomer();
     DataBooking dataBooking = new DataBooking();
-    DataVilla dataVilla = new DataVilla();
     DataRoom dataRoom = new DataRoom();
+    DataVilla dataVilla=new DataVilla();
     Scanner scanner = new Scanner(System.in);
 
     public void showCustomers() throws IOException {
@@ -44,7 +44,12 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
             for (Booking i : bookingList) {
                 if (year == i.getStartDay().getYear()) {
                     for (Room y : dataRoom.Read().keySet()) {
-                        if (y.getRentalType().equals("thue theo nam") && y.getRoomCode().equals(i.getServiceCode())) {
+                        if (y.getRoomCode().equals(i.getServiceCode())) {
+                            setOfCustomerCode.add(i.getCustomerCode());
+                        }
+                    }
+                    for (Villa y : dataVilla.Read().keySet()) {
+                        if (y.getVillaCode().equals(i.getServiceCode())) {
                             setOfCustomerCode.add(i.getCustomerCode());
                         }
                     }
@@ -63,11 +68,11 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
 
 
     }
-    public void checkPromotion(){
-        List<Booking> listVoucher10=new ArrayList<>();
-        List<Booking> listVoucher20=new ArrayList<>();
-        List<Booking> listVoucher50=new ArrayList<>();
-        Stack<Booking>bookingOfMonth=new Stack<>();
+    public void checkPromotion() throws IOException {
+        List<Customer> listVoucher10=new ArrayList<>();
+        List<Customer> listVoucher20=new ArrayList<>();
+        List<Customer> listVoucher50=new ArrayList<>();
+        Stack<Customer>bookingOfMonth=new Stack<>();
         System.out.println("nhap thang hien tai");
         int month = 0;
         boolean flagOfMonth;
@@ -130,7 +135,11 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
         }while (!flagOfVoucher50);
         for (Booking i:dataBooking.readBooking()){
             if (month==i.getStartDay().getMonthValue()&&year==i.getStartDay().getYear()){
-                bookingOfMonth.add(i);
+                for (Customer y:dataCustomer.Read()){
+                    if (y.getCustomerCode()==i.getCustomerCode()){
+                        bookingOfMonth.add(y);
+                    }
+                }
             }
         }
         while (!bookingOfMonth.empty()){
