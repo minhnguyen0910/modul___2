@@ -10,13 +10,23 @@ public class Booking implements Comparable<Booking>{
     LocalDate finishDay;
     int customerCode;
     String serviceName;
+    String serviceCode;
 
-    public Booking(int bookingCode, LocalDate startDay, LocalDate finishDay, int customerCode, String serviceName) {
+    public Booking(int bookingCode, LocalDate startDay, LocalDate finishDay, int customerCode, String serviceName, String serviceCode) {
         this.bookingCode = bookingCode;
         this.startDay = startDay;
         this.finishDay = finishDay;
         this.customerCode = customerCode;
         this.serviceName = serviceName;
+        this.serviceCode = serviceCode;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
     }
 
     public int getBookingCode() {
@@ -61,7 +71,7 @@ public class Booking implements Comparable<Booking>{
 
     @Override
     public String toString() {
-        return bookingCode+","+startDay+","+finishDay+","+customerCode+","+serviceName;
+        return bookingCode+","+startDay+","+finishDay+","+customerCode+","+serviceName+","+serviceCode;
     }
 
     @Override

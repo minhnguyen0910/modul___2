@@ -178,7 +178,7 @@ public class BookingServiceImpl implements IBookingService {
             choosess = scanner.nextLine();
             switch (choosess) {
                 case "1":
-                    Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName);
+                    Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName,codeService);
                     FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING, true);
                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                     bufferedWriter.write(booking + "\n");

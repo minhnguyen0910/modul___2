@@ -26,7 +26,8 @@ public class DataBooking {
                 LocalDate finishDay = LocalDate.parse(temp[2]);
                 int customerCode = Integer.parseInt(temp[3]);
                 String serviceName = temp[4];
-                bookingList.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName));
+                String serviceCode=temp[5];
+                bookingList.add(new Booking(bookingCode, startDay, finishDay, customerCode, serviceName,serviceCode));
 
             }
             bufferedReader.close();
