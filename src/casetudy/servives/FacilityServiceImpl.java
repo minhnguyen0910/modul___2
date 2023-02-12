@@ -16,13 +16,11 @@ import java.util.*;
 
 public class FacilityServiceImpl implements IFacilityService {
     Scanner scanner = new Scanner(System.in);
-    Map<Room, Integer> myRoomList = new LinkedHashMap<>();
-    Map<Villa, Integer> myVillaList = new LinkedHashMap<>();
     Regex regex = new Regex();
     DataRoom dataRoom = new DataRoom();
     DataVilla dataVilla = new DataVilla();
 
-    public void addRoom() throws IOException {
+    public void addRoom() {
         String roomCode;
         do {
             System.out.println("nhap ma phong theo SVRO-YYYY");
@@ -120,13 +118,17 @@ public class FacilityServiceImpl implements IFacilityService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }finally {
-            bufferedWriter.close();
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 
     }
 
-    public void addVilla() throws IOException {
+    public void addVilla() {
         String villaCode;
         do {
             System.out.println("nhap ma villa theo dinh dang SVVL-YYYY");
@@ -248,14 +250,25 @@ public class FacilityServiceImpl implements IFacilityService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }finally {
-            bufferedWriter.close();
+            try {
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void maintenance() throws IOException {
+    public void maintenance() {
         List<Facility> facilityList = new ArrayList<>();
-        Map<Room,Integer> roomIntegerMap=dataRoom.Read();
-        Map<Villa,Integer> villaIntegerMap=dataVilla.Read();
+        Map<Room,Integer> roomIntegerMap;
+        Map<Villa,Integer> villaIntegerMap;
+        try {
+           roomIntegerMap =dataRoom.Read();
+           villaIntegerMap =dataVilla.Read();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
         for (Facility i : roomIntegerMap.keySet()) {
             if (roomIntegerMap.get(i)>= 5) {
                 facilityList.add(i);

@@ -18,13 +18,18 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
     DataCustomer dataCustomer = new DataCustomer();
     DataBooking dataBooking = new DataBooking();
     DataRoom dataRoom = new DataRoom();
-    DataVilla dataVilla=new DataVilla();
+    DataVilla dataVilla = new DataVilla();
     Scanner scanner = new Scanner(System.in);
 
-    public void showCustomers() throws IOException {
+    public void showCustomers() {
         List<Booking> bookingList = dataBooking.readBooking();
         Set<Integer> setOfCustomerCode = new TreeSet<>();
-        List<Customer> customerList = dataCustomer.Read();
+        List<Customer> customerList = null;
+        try {
+            customerList = dataCustomer.Read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         List<Integer> listOfCustomerCode = new ArrayList<>();
         System.out.println("moi ban nhap nam tim kiem");
         int year = 0;
@@ -41,20 +46,25 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
                     System.out.println("vui long nhap bang so");
                 }
             } while (!flagCheckYear);
-            for (Booking i : bookingList) {
-                if (year == i.getStartDay().getYear()) {
-                    for (Room y : dataRoom.Read().keySet()) {
-                        if (y.getRoomCode().equals(i.getServiceCode())) {
-                            setOfCustomerCode.add(i.getCustomerCode());
+            try {
+                for (Booking i : bookingList) {
+                    if (year == i.getStartDay().getYear()) {
+                        for (Room y : dataRoom.Read().keySet()) {
+                            if (y.getRoomCode().equals(i.getServiceCode())) {
+                                setOfCustomerCode.add(i.getCustomerCode());
+                            }
                         }
-                    }
-                    for (Villa y : dataVilla.Read().keySet()) {
-                        if (y.getVillaCode().equals(i.getServiceCode())) {
-                            setOfCustomerCode.add(i.getCustomerCode());
+                        for (Villa y : dataVilla.Read().keySet()) {
+                            if (y.getVillaCode().equals(i.getServiceCode())) {
+                                setOfCustomerCode.add(i.getCustomerCode());
+                            }
                         }
                     }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+
             listOfCustomerCode.addAll(setOfCustomerCode);
             for (int i = 0; i < listOfCustomerCode.size(); i++) {
                 for (int j = 0; j < customerList.size(); j++) {
@@ -68,86 +78,91 @@ public class PromotionServiceImpl implements IPromotionServiceImpl {
 
 
     }
-    public void checkPromotion() throws IOException {
-        List<Customer> listVoucher10=new ArrayList<>();
-        List<Customer> listVoucher20=new ArrayList<>();
-        List<Customer> listVoucher50=new ArrayList<>();
-        Stack<Customer>bookingOfMonth=new Stack<>();
+
+    public void checkPromotion() {
+        List<Customer> listVoucher10 = new ArrayList<>();
+        List<Customer> listVoucher20 = new ArrayList<>();
+        List<Customer> listVoucher50 = new ArrayList<>();
+        Stack<Customer> bookingOfMonth = new Stack<>();
         System.out.println("nhap thang hien tai");
         int month = 0;
         boolean flagOfMonth;
         do {
             try {
-                month=Integer.parseInt(scanner.nextLine());
-                flagOfMonth=true;
-            }catch (NumberFormatException e){
+                month = Integer.parseInt(scanner.nextLine());
+                flagOfMonth = true;
+            } catch (NumberFormatException e) {
                 System.out.println("vui long nhap bang so");
-                flagOfMonth=false;
+                flagOfMonth = false;
             }
-        }while (!flagOfMonth);
+        } while (!flagOfMonth);
         System.out.println("nhap nam hien tai");
         int year = 0;
         boolean flagOfYear;
         do {
             try {
-                year=Integer.parseInt(scanner.nextLine());
-                flagOfYear=true;
-            }catch (NumberFormatException e){
+                year = Integer.parseInt(scanner.nextLine());
+                flagOfYear = true;
+            } catch (NumberFormatException e) {
                 System.out.println("vui long nhap bang so");
-                flagOfYear=false;
+                flagOfYear = false;
             }
-        }while (!flagOfYear);
+        } while (!flagOfYear);
         System.out.println("so luong voucher 10% :");
         int voucher10 = 0;
         boolean flagOfVoucher10;
         do {
             try {
-                voucher10=Integer.parseInt(scanner.nextLine());
-                flagOfVoucher10=true;
-            }catch (NumberFormatException e){
+                voucher10 = Integer.parseInt(scanner.nextLine());
+                flagOfVoucher10 = true;
+            } catch (NumberFormatException e) {
                 System.out.println("vui long nhap bang so");
-                flagOfVoucher10=false;
+                flagOfVoucher10 = false;
             }
-        }while (!flagOfVoucher10);
+        } while (!flagOfVoucher10);
         System.out.println("so luong voucher 20");
         int voucher20 = 0;
         boolean flagOfVoucher20;
         do {
             try {
-                voucher20=Integer.parseInt(scanner.nextLine());
-                flagOfVoucher20=true;
-            }catch (NumberFormatException e){
+                voucher20 = Integer.parseInt(scanner.nextLine());
+                flagOfVoucher20 = true;
+            } catch (NumberFormatException e) {
                 System.out.println("vui long nhap bang so");
-                flagOfVoucher20=false;
+                flagOfVoucher20 = false;
             }
-        }while (!flagOfVoucher20);
+        } while (!flagOfVoucher20);
         System.out.println("so luong voucher 50");
         int voucher50;
         boolean flagOfVoucher50;
         do {
             try {
-                voucher50=Integer.parseInt(scanner.nextLine());
-                flagOfVoucher50=true;
-            }catch (NumberFormatException e){
+                voucher50 = Integer.parseInt(scanner.nextLine());
+                flagOfVoucher50 = true;
+            } catch (NumberFormatException e) {
                 System.out.println("vui long nhap bang so");
-                flagOfVoucher50=false;
+                flagOfVoucher50 = false;
             }
-        }while (!flagOfVoucher50);
-        for (Booking i:dataBooking.readBooking()){
-            if (month==i.getStartDay().getMonthValue()&&year==i.getStartDay().getYear()){
-                for (Customer y:dataCustomer.Read()){
-                    if (y.getCustomerCode()==i.getCustomerCode()){
-                        bookingOfMonth.add(y);
+        } while (!flagOfVoucher50);
+        for (Booking i : dataBooking.readBooking()) {
+            if (month == i.getStartDay().getMonthValue() && year == i.getStartDay().getYear()) {
+                try {
+                    for (Customer y : dataCustomer.Read()) {
+                        if (y.getCustomerCode() == i.getCustomerCode()) {
+                            bookingOfMonth.add(y);
+                        }
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
-        while (!bookingOfMonth.empty()){
-            if (listVoucher10.size()<voucher10){
+        while (!bookingOfMonth.empty()) {
+            if (listVoucher10.size() < voucher10) {
                 listVoucher10.add(bookingOfMonth.pop());
-            }else if(listVoucher20.size()<voucher20){
+            } else if (listVoucher20.size() < voucher20) {
                 listVoucher20.add(bookingOfMonth.pop());
-            }else {
+            } else {
                 listVoucher50.add(bookingOfMonth.pop());
             }
         }

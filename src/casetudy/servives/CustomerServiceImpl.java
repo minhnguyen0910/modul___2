@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements ICustomerService {
     static List<Customer> customerList = new LinkedList<>();
     DataCustomer dataCustomer = new DataCustomer();
 
-    public void add() throws IOException {
+    public void add(){
         System.out.println("ten khach hang");
         String name = scanner.nextLine();
         System.out.println("ngay sinh");
@@ -35,10 +35,14 @@ public class CustomerServiceImpl implements ICustomerService {
         do {
             customerCode = Integer.parseInt(scanner.nextLine());
             flagOfCustomerCode = true;
-            for (Customer i : dataCustomer.Read()) {
-                if (i.getCustomerCode() == customerCode) {
-                    flagOfCustomerCode = false;
+            try {
+                for (Customer i : dataCustomer.Read()) {
+                    if (i.getCustomerCode() == customerCode) {
+                        flagOfCustomerCode = false;
+                    }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             if (!flagOfCustomerCode) {
@@ -113,8 +117,13 @@ public class CustomerServiceImpl implements ICustomerService {
         }
     }
 
-    public void edit() throws IOException {
-        List<Customer> customerList1 = dataCustomer.Read();
+    public void edit() {
+        List<Customer> customerList1 = null;
+        try {
+            customerList1 = dataCustomer.Read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("nhap ma khách hang");
         int customerCode = Integer.parseInt(scanner.nextLine());
@@ -246,13 +255,17 @@ public class CustomerServiceImpl implements ICustomerService {
                 default:
                     System.out.println("vui lonh nhap lua chon tu 1 => 9");
             }
-            dataCustomer.write(customerList1);
+            try {
+                dataCustomer.write(customerList1);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             System.out.println("ma khong ton tai");
         }
     }
 
-    public void remove() throws IOException {
+    public void remove(){
         List<Customer> customerList2;
         try {
             customerList2 = dataCustomer.Read();
@@ -276,6 +289,10 @@ public class CustomerServiceImpl implements ICustomerService {
                 System.out.println("ma khong ton tai");
             }
         }
-        dataCustomer.write(customerList2);
+        try {
+            dataCustomer.write(customerList2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

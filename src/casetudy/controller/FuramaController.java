@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FuramaController {
-    public  void displayMainMenu() throws IOException {
+    static public void displayMainMenu() {
         Scanner scanner = new Scanner(System.in);
         String choose;
         EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
         CustomerServiceImpl customerService = new CustomerServiceImpl();
         FacilityServiceImpl facilityService = new FacilityServiceImpl();
-        BookingServiceImpl bookingService=new BookingServiceImpl();
-        PromotionServiceImpl promotionService=new PromotionServiceImpl();
+        BookingServiceImpl bookingService = new BookingServiceImpl();
+        PromotionServiceImpl promotionService = new PromotionServiceImpl();
 
         do {
             System.out.println("nhap lua chon cua ban\n" +
@@ -48,7 +48,7 @@ public class FuramaController {
                                 employeeService.add();
                                 break;
                             case "3":
-                                employeeService.delete();
+                                employeeService.remove();
                                 break;
                             case "4":
                                 employeeService.edit();
@@ -89,7 +89,7 @@ public class FuramaController {
                                 System.out.println("vui long nhap dung lua chon tu 1 => 5\n" +
                                         "Xin cam on");
                         }
-                    }while (true);
+                    } while (true);
                 case "3":
                     String chooseCase3;
                     System.out.println("1.Display list facility\n" +
@@ -146,8 +146,8 @@ public class FuramaController {
                             "2.Display list booking\n" +
                             "3.Return list menu\n" +
                             "4.Exit");
-                    String chooseOfCase4=scanner.nextLine();
-                    switch (chooseOfCase4){
+                    String chooseOfCase4 = scanner.nextLine();
+                    switch (chooseOfCase4) {
                         case "1":
                             bookingService.addBooking();
                             break;
@@ -168,8 +168,8 @@ public class FuramaController {
                     System.out.println("1.Display list customers use service\n" +
                             "2.Display list customers get voucher\n" +
                             "3.Return main menu");
-                    String chooseOfCase5=scanner.nextLine();
-                    switch (chooseOfCase5){
+                    String chooseOfCase5 = scanner.nextLine();
+                    switch (chooseOfCase5) {
                         case "1":
                             promotionService.showCustomers();
                             break;
@@ -185,6 +185,7 @@ public class FuramaController {
                     break;
                 case "6":
                     System.exit(1);
+                    break;
                 default:
                     System.out.println("vui long nhap dung lua chon tu 1 => 6\n" +
                             "Xin cam on");
@@ -193,11 +194,6 @@ public class FuramaController {
     }
 
     public static void main(String[] args) {
-        FuramaController furamaController=new FuramaController();
-        try {
-            furamaController.displayMainMenu();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        displayMainMenu();
     }
 }

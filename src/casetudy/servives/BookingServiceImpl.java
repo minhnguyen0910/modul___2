@@ -14,7 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class BookingServiceImpl implements IBookingService {
-    static Map<Villa,Integer> villaIntegerMap=new LinkedHashMap<>();
+    static Map<Villa, Integer> villaIntegerMap = new LinkedHashMap<>();
     static Scanner scanner = new Scanner(System.in);
     DataCustomer dataCustomer = new DataCustomer();
     DataRoom dataRoom = new DataRoom();
@@ -22,12 +22,19 @@ public class BookingServiceImpl implements IBookingService {
     DataBooking dataBooking = new DataBooking();
     Regex regex = new Regex();
     FuramaController furamaController = new FuramaController();
-    Set<Booking> bookingSet=new TreeSet<>();
+    Set<Booking> bookingSet = new TreeSet<>();
 
-    public void addBooking() throws IOException {
-        Map<Villa, Integer> villaIntegerMap1 = dataVilla.Read();
-        Map<Room, Integer> roomIntegerMap = dataRoom.Read();
-        List<Booking> bookingList=dataBooking.readBooking();
+    public void addBooking() {
+        Map<Villa, Integer> villaIntegerMap1;
+        Map<Room, Integer> roomIntegerMap;
+        try {
+            villaIntegerMap1 = dataVilla.Read();
+            roomIntegerMap = dataRoom.Read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Booking> bookingList = dataBooking.readBooking();
 
         System.out.println("moi ban nhap ma khach hang co trong list");
         try {
@@ -52,10 +59,14 @@ public class BookingServiceImpl implements IBookingService {
                 }
             } while (!flag);
 
-            for (Customer i : dataCustomer.Read()) {
-                if (i.getCustomerCode() == codeCustomer) {
-                    flagOfCustomerCode = true;
+            try {
+                for (Customer i : dataCustomer.Read()) {
+                    if (i.getCustomerCode() == codeCustomer) {
+                        flagOfCustomerCode = true;
+                    }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         } while (!flagOfCustomerCode);
         System.out.println("moi ban nhap ma dich vu co trong list");
@@ -178,29 +189,35 @@ public class BookingServiceImpl implements IBookingService {
             choosess = scanner.nextLine();
             switch (choosess) {
                 case "1":
-                    Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName,codeService);
-                    FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING, true);
-                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                    bufferedWriter.write(booking + "\n");
-                    bufferedWriter.close();
-                    bookingSet.add(booking);
-                    List<Booking> bookingList1=dataBooking.readBooking();
-                    Collections.sort(bookingList1);
-                    dataBooking.writeBooking(bookingList1);
-                    if (villa != null) {
-                        count++;
-                        villaIntegerMap1.replace(villa,count);
-                        dataVilla.write(villaIntegerMap1);
+                    try {
+                        Booking booking = new Booking(bookingCode, startDay, finishDay, codeCustomer, serviceName, codeService);
+                        FileWriter fileWriter = new FileWriter(HangSo.FILE_BOOKING, true);
+                        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                        bufferedWriter.write(booking + "\n");
+                        bufferedWriter.close();
+                        bookingSet.add(booking);
+                        List<Booking> bookingList1 = dataBooking.readBooking();
+                        Collections.sort(bookingList1);
+                        dataBooking.writeBooking(bookingList1);
+                        if (villa != null) {
+                            count++;
+                            villaIntegerMap1.replace(villa, count);
+                            dataVilla.write(villaIntegerMap1);
 
-                    } else if (room!=null){
-                        count++;
-                        roomIntegerMap.put(room, count);
-                        dataRoom.write(roomIntegerMap);
+                        } else if (room != null) {
+                            count++;
+                            roomIntegerMap.put(room, count);
+                            dataRoom.write(roomIntegerMap);
 
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+
                     break;
                 case "2":
-                    furamaController.displayMainMenu();
+                        furamaController.displayMainMenu();
+
             }
         } while (!"12".contains(choosess));
 
@@ -213,22 +230,22 @@ public class BookingServiceImpl implements IBookingService {
             System.out.println(i);
         }
     }
-    public void resetTheNumberOfUses() throws IOException {
-        Map<Room,Integer> data=dataRoom.Read();
-        Map<Villa,Integer> dat=dataVilla.Read();
-        for (Room i:data.keySet()){
-            data.replace(i,0);
-        }
-        dataRoom.write(data);
-        for (Villa i:dat.keySet()){
-            dat.replace(i,0);
-        }
-        dataVilla.write(dat);
-    }
 
-    public static void main(String[] args) throws IOException {
-        BookingServiceImpl b = new BookingServiceImpl();
-       b.addBooking();
-//        b.resetTheNumberOfUses();
+    public void resetTheNumberOfUses() {
+        try {
+            Map<Room, Integer> data = dataRoom.Read();
+            Map<Villa, Integer> dat = dataVilla.Read();
+            for (Room i : data.keySet()) {
+                data.replace(i, 0);
+            }
+            dataRoom.write(data);
+            for (Villa i : dat.keySet()) {
+                dat.replace(i, 0);
+            }
+            dataVilla.write(dat);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

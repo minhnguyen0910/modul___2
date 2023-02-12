@@ -134,7 +134,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         }
     }
 
-    public void edit() throws IOException {
+    public void edit() {
         List<Employee> employeeList1;
         try {
             employeeList1 = dataEmployee.readEmployee();
@@ -329,21 +329,21 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                 }break;
                 case "12":
-                    try {
                         furamaController.displayMainMenu();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
+                        break;
                 default:
                     System.out.println("vui long nhap lua hon tu 1 => 12");
 
             }
-            dataEmployee.writeEmployee(employeeList1);
+            try {
+                dataEmployee.writeEmployee(employeeList1);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } while (true);
     }
 
-    public void delete() {
+    public void remove() {
         List<Employee> employeeList1;
         try {
             employeeList1 = dataEmployee.readEmployee();
