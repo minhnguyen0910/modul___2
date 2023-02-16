@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements ICustomerService {
     static List<Customer> customerList = new LinkedList<>();
     DataCustomer dataCustomer = new DataCustomer();
 
-    public void add(){
+    public void add() {
         System.out.println("ten khach hang");
         String name = scanner.nextLine();
         System.out.println("ngay sinh");
@@ -52,6 +52,7 @@ public class CustomerServiceImpl implements ICustomerService {
         } while (!flagOfCustomerCode);
         String customerType = null;
         String chooseOfCustomerType;
+        boolean flagOfCustomerType;
         do {
             System.out.println("chon kieu khach hang\n" +
                     "1.Diamond\n" +
@@ -60,6 +61,7 @@ public class CustomerServiceImpl implements ICustomerService {
                     "4.Silver\n" +
                     "5.Member");
             chooseOfCustomerType = scanner.nextLine();
+            flagOfCustomerType = true;
             switch (chooseOfCustomerType) {
                 case "1":
                     customerType = "Diamond";
@@ -78,9 +80,10 @@ public class CustomerServiceImpl implements ICustomerService {
                     break;
                 default:
                     System.out.println("vui long nhap lua chon tu 1 => 5");
+                    flagOfCustomerType = false;
 
             }
-        } while (!"12345".contains(chooseOfCustomerType));
+        } while (!flagOfCustomerType);
         Customer newCustomer = new Customer(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, customerCode, customerType);
         customerList.add(newCustomer);
         FileWriter fileWriter;
@@ -222,6 +225,7 @@ public class CustomerServiceImpl implements ICustomerService {
                 case "8":
                     String chooseOfCustomerType = null;
                     String customerType = null;
+                    boolean flagOfCustomer;
                     do {
                         System.out.println("chon kieu khach hang moi\n" +
                                 "1.Diamond\n" +
@@ -230,6 +234,7 @@ public class CustomerServiceImpl implements ICustomerService {
                                 "4.Silver\n" +
                                 "5.Member");
                         chooseOfCustomerType = scanner.nextLine();
+                        flagOfCustomer = true;
                         switch (chooseOfCustomerType) {
                             case "1":
                                 customerType = "Diamond";
@@ -247,10 +252,11 @@ public class CustomerServiceImpl implements ICustomerService {
                                 break;
                             default:
                                 System.out.println("vui long nhap lua chon tu 1 => 5");
+                                flagOfCustomer = false;
                         }
 
 
-                    } while (!chooseOfCustomerType.equals("12345"));
+                    } while (!flagOfCustomer);
                     break;
                 default:
                     System.out.println("vui lonh nhap lua chon tu 1 => 9");
@@ -265,7 +271,7 @@ public class CustomerServiceImpl implements ICustomerService {
         }
     }
 
-    public void remove(){
+    public void remove() {
         List<Customer> customerList2;
         try {
             customerList2 = dataCustomer.Read();

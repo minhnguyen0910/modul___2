@@ -65,10 +65,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
         } while (!flag);
         String chooseOfLevel = null;
         String level = null;
-
+        boolean flagOfLevel;
         do {
             System.out.println("moi ban chon trinh do\n" + "1.trung cap\n" + "2.cao dang\n" + "3.dai hoc\n" + "4.sau dai hoc\n" + "5.khac");
             chooseOfLevel = scanner.nextLine();
+            flagOfLevel = true;
             switch (chooseOfLevel) {
                 case "1":
                     level = "trung cap";
@@ -84,13 +85,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     break;
                 case "5":
                     level = scanner.nextLine();
+                    break;
+                default:
+                    System.out.println("vui long nhap lua chon tu 1 => 5");
+                    flagOfLevel = false;
             }
-        } while ("12345".equals(chooseOfLevel));
+        } while (!flagOfLevel);
         String chooseOfWorkingPosition = null;
         String workingPosition = null;
+        boolean flagOfWorkingPosition;
         do {
             System.out.println("vi tri lam viec\n" + "1.le tan\n" + "2.phuc vu\n" + "3.chuyen vien\n" + "4.giam sat\n" + "5.giam doc\n" + "6.vi tri khac");
             chooseOfWorkingPosition = scanner.nextLine();
+            flagOfWorkingPosition = true;
             switch (chooseOfWorkingPosition) {
                 case "1":
                     workingPosition = "le tan";
@@ -109,8 +116,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     break;
                 case "6":
                     workingPosition = scanner.nextLine();
+                    break;
+                default:
+                    System.out.println("vui long nhap lua chon tu 1 => 6");
+                    flagOfWorkingPosition = false;
+
             }
-        } while (!"123456".contains(chooseOfWorkingPosition));
+        } while (!flagOfWorkingPosition);
         System.out.println("nhap so luong");
         Double wage = Double.parseDouble(scanner.nextLine());
         Employee employee = new Employee(name, dayOfBirth, sex, identityCardNumber, phoneNumber, email, employeeCode, level, workingPosition, wage);
@@ -183,7 +195,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "3": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -201,7 +214,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "4": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -219,7 +233,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "5": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -237,7 +252,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "6": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -255,7 +271,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "7": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -273,7 +290,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "8": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -291,7 +309,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "9": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -309,7 +328,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "10": {
                     boolean flag = true;
                     System.out.println("nhap ten can sua");
@@ -327,10 +347,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
                     }
 
-                }break;
+                }
+                break;
                 case "12":
-                        furamaController.displayMainMenu();
-                        break;
+                    furamaController.displayMainMenu();
+                    break;
                 default:
                     System.out.println("vui long nhap lua hon tu 1 => 12");
 
@@ -352,8 +373,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
             if (employeeList1.isEmpty()) {
                 System.out.println("khong co nhan vien");
             } else {
-                for (int i=0; i<employeeList1.size();i++) {
-                    if (codeEmployee==employeeList1.get(i).getEmployeeCode()) {
+                for (int i = 0; i < employeeList1.size(); i++) {
+                    if (codeEmployee == employeeList1.get(i).getEmployeeCode()) {
                         employeeList1.remove(i);
                     }
                 }

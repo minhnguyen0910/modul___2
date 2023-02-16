@@ -14,7 +14,6 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class BookingServiceImpl implements IBookingService {
-    static Map<Villa, Integer> villaIntegerMap = new LinkedHashMap<>();
     static Scanner scanner = new Scanner(System.in);
     DataCustomer dataCustomer = new DataCustomer();
     DataRoom dataRoom = new DataRoom();
@@ -216,7 +215,7 @@ public class BookingServiceImpl implements IBookingService {
 
                     break;
                 case "2":
-                        furamaController.displayMainMenu();
+                    furamaController.displayMainMenu();
 
             }
         } while (!"12".contains(choosess));

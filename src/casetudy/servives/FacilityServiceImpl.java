@@ -66,12 +66,14 @@ public class FacilityServiceImpl implements IFacilityService {
         } while (!flagOfPeople);
         String chooseOfRentalType;
         String rentalType = null;
+        boolean flagOfRentalType;
         do {
             System.out.println("vui long chon kieu thue\n" +
                     "1.thue theo ngay\n" +
                     "2.thue theo thang\n" +
                     "3.thue theo nam");
             chooseOfRentalType = scanner.nextLine();
+            flagOfRentalType = true;
 
             switch (chooseOfRentalType) {
                 case "1":
@@ -85,9 +87,10 @@ public class FacilityServiceImpl implements IFacilityService {
                     break;
                 default:
                     System.out.println("vui long nhap lua chon tu 1 => 3");
+                    flagOfRentalType = false;
 
             }
-        } while (chooseOfRentalType.equals("123"));
+        } while (!flagOfRentalType);
         System.out.println("vui long chon dich vu mien phi di kem");
         String freeServiceIncluded = scanner.nextLine();
 
@@ -112,12 +115,12 @@ public class FacilityServiceImpl implements IFacilityService {
         Room room = new Room(serviceName, usableArea, rentalCost, maximum, rentalType, roomCode, freeServiceIncluded);
         BufferedWriter bufferedWriter = null;
         try {
-            FileWriter fileWriter = new FileWriter(HangSo.FILE_ROOM,true);
-             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(room + "," + count+"\n");
+            FileWriter fileWriter = new FileWriter(HangSo.FILE_ROOM, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(room + "," + count + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 bufferedWriter.close();
             } catch (IOException e) {
@@ -174,12 +177,14 @@ public class FacilityServiceImpl implements IFacilityService {
         } while (!flagOfPeople);
         String chooseOfRentalType;
         String rentalType = null;
+        boolean flagOfRentalType;
         do {
             System.out.println("vui long chon kieu thue \n" +
                     "1.thue theo ngay\n" +
                     "2.thue theo thang\n" +
                     "3.thue theo nam");
             chooseOfRentalType = scanner.nextLine();
+            flagOfRentalType = true;
 
             switch (chooseOfRentalType) {
                 case "1":
@@ -193,9 +198,10 @@ public class FacilityServiceImpl implements IFacilityService {
                     break;
                 default:
                     System.out.println("vui long nhap lua chon tu 1 => 3");
+                    flagOfRentalType = false;
 
             }
-        } while ("123".equals(chooseOfRentalType));
+        } while (!flagOfRentalType);
         System.out.println("nhap tieu chuan phong");
         String roomStandard = scanner.nextLine();
         System.out.println("nhap dien tich ho boi");
@@ -241,15 +247,15 @@ public class FacilityServiceImpl implements IFacilityService {
                 flagOfCount = false;
             }
         } while (!flagOfCount);
-        Villa villa =new Villa(serviceName, usableArea, rentalCost, maximum, rentalType, roomStandard, swimmingPoolArea, numberOfFloor, villaCode);
+        Villa villa = new Villa(serviceName, usableArea, rentalCost, maximum, rentalType, roomStandard, swimmingPoolArea, numberOfFloor, villaCode);
         BufferedWriter bufferedWriter = null;
         try {
-            FileWriter fileWriter = new FileWriter(HangSo.FILE_VILLA,true);
+            FileWriter fileWriter = new FileWriter(HangSo.FILE_VILLA, true);
             bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(villa + "," + count+"\n");
+            bufferedWriter.write(villa + "," + count + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 bufferedWriter.close();
             } catch (IOException e) {
@@ -260,17 +266,17 @@ public class FacilityServiceImpl implements IFacilityService {
 
     public void maintenance() {
         List<Facility> facilityList = new ArrayList<>();
-        Map<Room,Integer> roomIntegerMap;
-        Map<Villa,Integer> villaIntegerMap;
+        Map<Room, Integer> roomIntegerMap;
+        Map<Villa, Integer> villaIntegerMap;
         try {
-           roomIntegerMap =dataRoom.Read();
-           villaIntegerMap =dataVilla.Read();
-        }catch (IOException e){
+            roomIntegerMap = dataRoom.Read();
+            villaIntegerMap = dataVilla.Read();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         for (Facility i : roomIntegerMap.keySet()) {
-            if (roomIntegerMap.get(i)>= 5) {
+            if (roomIntegerMap.get(i) >= 5) {
                 facilityList.add(i);
             }
         }
